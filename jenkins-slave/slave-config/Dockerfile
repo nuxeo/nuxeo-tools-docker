@@ -42,3 +42,11 @@ RUN chown -R jenkins:jenkins /opt/jenkins
 RUN sh -c 'cp -Rp /opt/jenkins/ssh-broken /opt/jenkins/.ssh && rm -rf /opt/jenkins/ssh-broken'
 RUN sh -c 'cp -Rp /opt/jenkins/m2-broken /opt/jenkins/.m2 && rm -rf /opt/jenkins/m2-broken'
 
+ADD tmpfiles/nxpkg-secret.key /opt/jenkins/nxpkg-secret.key
+RUN su jenkins -c 'gpg --allow-secret-key-import --import /opt/jenkins/nxpkg-secret.key'
+RUN rm /opt/jenkins/nxpkg-secret.key
+
+ADD tmpfiles/nxpkg-public.key /opt/jenkins/nxpkg-public.key
+RUN su jenkins -c 'gpg --import /opt/jenkins/nxpkg-public.key'
+RUN rm /opt/jenkins/nxpkg-public.key
+

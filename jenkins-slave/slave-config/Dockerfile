@@ -50,3 +50,7 @@ ADD tmpfiles/nxpkg-public.key /opt/jenkins/nxpkg-public.key
 RUN su jenkins -c 'gpg --import /opt/jenkins/nxpkg-public.key'
 RUN rm /opt/jenkins/nxpkg-public.key
 
+# Initialize maven repository with android artifacts
+RUN su jenkins -c 'cd /opt/jenkins && git clone https://github.com/mosabua/maven-android-sdk-deployer.git'
+RUN su jenkins -c 'cd /opt/jenkins/maven-android-sdk-deployer && source /opt/build/tools/android-installer/env && mvn install -P4.1'
+

@@ -10,6 +10,7 @@ RUN echo "deb http://netboot.in.nuxeo.com/ubuntu/ trusty-updates main restricted
 RUN echo "deb http://netboot.in.nuxeo.com/ubuntu/ trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list
 RUN echo "deb http://netboot.in.nuxeo.com/ubuntu-security/ trusty-security main restricted universe multiverse" >> /etc/apt/sources.list
 
+RUN dpkg --add-architecture i386
 RUN apt-get update
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -74,4 +75,12 @@ RUN apt-get -q -y install imagemagick ffmpeg2theora ufraw poppler-utils libreoff
 RUN git clone https://github.com/nuxeo/ffmpeg-nuxeo.git
 ENV BUILD_YASM true
 RUN cd ffmpeg-nuxeo && ./build-all.sh true
+
+# Install Android SDK
+RUN apt-get -q -y install libstdc++6:i386 lib32z1 expect
+ENV ANDROID_COMPONENTS build-tools-18.1.0,android-17,sysimg-17,android-16,sysimg-16,addon-google_apis-google-16,extra-android-support,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository
+RUN curl -L -Oandroid-sdk-installer https://raw.github.com/embarkmobile/android-sdk-installer/version-1/android-sdk-installer
+RUN bash android-sdk-installer --install=$ANDROID_COMPONENTS --dir=/opt/build/tools/android-installer
+RUN ln -s /opt/build/tools/android-installer/android-sdk-linux /opt/build/tools/android
+RUN rm android-sdk-installer
 

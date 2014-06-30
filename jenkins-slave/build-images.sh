@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 docker build -t nuxeo/jenkins-slave-base slave-base
 

@@ -5,6 +5,8 @@
 FROM       ubuntu:trusty
 MAINTAINER Nuxeo Packagers <packagers@nuxeo.com>
 
+RUN useradd -d /opt/jenkins -m -s /bin/bash jenkins
+
 RUN echo "deb http://netboot.in.nuxeo.com/ubuntu/ trusty main restricted universe multiverse" > /etc/apt/sources.list
 RUN echo "deb http://netboot.in.nuxeo.com/ubuntu/ trusty-updates main restricted universe multiverse" >> /etc/apt/sources.list
 RUN echo "deb http://netboot.in.nuxeo.com/ubuntu/ trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list
@@ -40,16 +42,19 @@ RUN rm /tmp/maven-2.2.1.tar.gz
 RUN wget -O /tmp/maven-3.0.5.tar.gz http://archive.apache.org/dist/maven/binaries/apache-maven-3.0.5-bin.tar.gz
 RUN tar xzf /tmp/maven-3.0.5.tar.gz -C /opt/build/tools
 RUN ln -s /opt/build/tools/apache-maven-3.0.5 /opt/build/tools/maven-3.0
+RUN ln -s /opt/build/tools/apache-maven-3.0.5 /opt/build/tools/maven3.0
 RUN rm /tmp/maven-3.0.5.tar.gz
 
 RUN wget -O /tmp/maven-3.1.1.tar.gz http://archive.apache.org/dist/maven/binaries/apache-maven-3.1.1-bin.tar.gz
 RUN tar xzf /tmp/maven-3.1.1.tar.gz -C /opt/build/tools
 RUN ln -s /opt/build/tools/apache-maven-3.1.1 /opt/build/tools/maven-3.1
+RUN ln -s /opt/build/tools/apache-maven-3.1.1 /opt/build/tools/maven3.1
 RUN rm /tmp/maven-3.1.1.tar.gz
 
 RUN wget -O /tmp/maven-3.2.1.tar.gz http://archive.apache.org/dist/maven/binaries/apache-maven-3.2.1-bin.tar.gz
 RUN tar xzf /tmp/maven-3.2.1.tar.gz -C /opt/build/tools
 RUN ln -s /opt/build/tools/apache-maven-3.2.1 /opt/build/tools/maven-3.2
+RUN ln -s /opt/build/tools/apache-maven-3.2.1 /opt/build/tools/maven3.2
 RUN rm /tmp/maven-3.2.1.tar.gz
 
 RUN ln -s /opt/build/tools/maven-3.2/bin/mvn /usr/bin/mvn
@@ -63,7 +68,7 @@ RUN rm /tmp/gradle.zip
 
 
 # Install other misc dependencies
-RUN apt-get -q -y install linkchecker s3cmd python-dev python-setuptools python-lxml python-webunit python-docutils python-reportlab python-pypdf gnuplot python-pip tcpwatch-httpproxy dpkg-dev devscripts debhelper gnupg
+RUN apt-get -q -y install linkchecker s3cmd python-dev python-setuptools python-lxml python-webunit python-docutils python-reportlab python-pypdf gnuplot python-pip tcpwatch-httpproxy dpkg-dev devscripts debhelper cdbs gnupg
 RUN easy_install -f http://funkload.nuxeo.org/snapshots/ -U funkload
 RUN echo "deb https://get.docker.io/ubuntu docker main" > /etc/apt/sources.list.d/docker.list
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
@@ -78,9 +83,18 @@ RUN cd ffmpeg-nuxeo && ./build-all.sh true
 
 # Install Android SDK
 RUN apt-get -q -y install libstdc++6:i386 lib32z1 expect
-ENV ANDROID_COMPONENTS build-tools-18.1.0,android-17,sysimg-17,android-16,sysimg-16,addon-google_apis-google-16,extra-android-support,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository
-RUN curl -L -Oandroid-sdk-installer https://raw.github.com/embarkmobile/android-sdk-installer/version-1/android-sdk-installer
-RUN bash android-sdk-installer --install=$ANDROID_COMPONENTS --dir=/opt/build/tools/android-installer
+RUN curl -L -Oandroid-sdk-installer https://raw.githubusercontent.com/embarkmobile/android-sdk-installer/f11ccc15b6f9d43eb1e7a61d3bc0939cc3827545/android-sdk-installer
+ENV ANDROID_COMPONENTS platform-tools,build-tools-18.1.0,android-17,sysimg-17,android-16,sysimg-16,android-8,sysimg-8,addon-google_apis-google-16,extra-android-support,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository
+RUN bash android-sdk-installer --install=$ANDROID_COMPONENTS --dir=/opt/build/tools/android-installer-broken
+RUN chown -R jenkins /opt/build/tools/android-installer-broken/*
+RUN cp -Rp /opt/build/tools/android-installer-broken /opt/build/tools/android-installer
+RUN rm -rf /opt/build/tools/android-installer-broken
+RUN perl -p -i -e 's/android-installer-broken/android-installer/g' /opt/build/tools/android-installer/env
 RUN ln -s /opt/build/tools/android-installer/android-sdk-linux /opt/build/tools/android
+RUN ln -s /opt/build/tools/android/platform-tools/adb /opt/build/tools/android/tools/adb
+RUN ln -s /opt/build/tools/android/build-tools/18.1.0/aapt /opt/build/tools/android/platform-tools/aapt
 RUN rm android-sdk-installer
+# Initialize maven repository with android artifacts
+RUN su jenkins -c 'cd /opt/jenkins && git clone https://github.com/mosabua/maven-android-sdk-deployer.git'
+RUN su jenkins -c 'cd /opt/jenkins/maven-android-sdk-deployer && source /opt/build/tools/android-installer/env && mvn install -P4.1'
 

@@ -6,8 +6,6 @@ FROM       nuxeo/jenkins-slave-base
 MAINTAINER Nuxeo Packagers <packagers@nuxeo.com>
 
 
-# Setup user
-RUN useradd -d /opt/jenkins -m -s /bin/bash jenkins
 RUN echo "\njenkins ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Using intermediary dirs to work around Docker bug #1295
@@ -49,8 +47,4 @@ RUN rm /opt/jenkins/nxpkg-secret.key
 ADD tmpfiles/nxpkg-public.key /opt/jenkins/nxpkg-public.key
 RUN su jenkins -c 'gpg --import /opt/jenkins/nxpkg-public.key'
 RUN rm /opt/jenkins/nxpkg-public.key
-
-# Initialize maven repository with android artifacts
-RUN su jenkins -c 'cd /opt/jenkins && git clone https://github.com/mosabua/maven-android-sdk-deployer.git'
-RUN su jenkins -c 'cd /opt/jenkins/maven-android-sdk-deployer && source /opt/build/tools/android-installer/env && mvn install -P4.1'
 

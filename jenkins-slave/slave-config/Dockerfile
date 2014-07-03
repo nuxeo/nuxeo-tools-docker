@@ -15,7 +15,7 @@ RUN chmod 0700 /opt/jenkins/ssh-broken
 ADD tmpfiles/jenkins_id_rsa /opt/jenkins/ssh-broken/id_rsa
 ADD files/jenkins_id_rsa.pub /opt/jenkins/ssh-broken/id_rsa.pub
 ADD files/jenkins_ssh_config /opt/jenkins/ssh-broken/config
-ADD files/jenkins_id_rsa.pub /opt/jenkins/ssh-broken/authorized_keys
+ADD tmpfiles/authorized_keys /opt/jenkins/ssh-broken/authorized_keys
 RUN chmod 0600 /opt/jenkins/ssh-broken/*
 
 ADD tmpfiles/jenkins_netrc /opt/jenkins/.netrc
@@ -38,7 +38,7 @@ RUN mkdir /opt/jenkins/workspace
 
 RUN chown -R jenkins:jenkins /opt/jenkins
 RUN sh -c 'cp -Rp /opt/jenkins/ssh-broken /opt/jenkins/.ssh && rm -rf /opt/jenkins/ssh-broken'
-RUN sh -c 'cp -Rp /opt/jenkins/m2-broken /opt/jenkins/.m2 && rm -rf /opt/jenkins/m2-broken'
+RUN sh -c 'cp -Rp /opt/jenkins/m2-broken/* /opt/jenkins/.m2/ && rm -rf /opt/jenkins/m2-broken'
 
 ADD tmpfiles/nxpkg-secret.key /opt/jenkins/nxpkg-secret.key
 RUN su jenkins -c 'gpg --allow-secret-key-import --import /opt/jenkins/nxpkg-secret.key'

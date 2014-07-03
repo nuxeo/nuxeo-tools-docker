@@ -98,3 +98,7 @@ RUN rm android-sdk-installer
 RUN su jenkins -c 'cd /opt/jenkins && git clone https://github.com/mosabua/maven-android-sdk-deployer.git'
 RUN su jenkins -c 'cd /opt/jenkins/maven-android-sdk-deployer && source /opt/build/tools/android-installer/env && mvn install -P4.1'
 
+# Add Oracle JDBC drivers
+ADD tmpfiles/m2repo/com /opt/jenkins/.m2/repository/com
+RUN chown -R jenkins /opt/jenkins/.m2/repository/com
+

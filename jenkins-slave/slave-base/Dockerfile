@@ -68,7 +68,7 @@ RUN rm /tmp/gradle.zip
 
 
 # Install other misc dependencies
-RUN apt-get -q -y install linkchecker s3cmd python-dev python-setuptools python-lxml python-webunit python-docutils python-reportlab python-pypdf gnuplot python-pip tcpwatch-httpproxy dpkg-dev devscripts debhelper cdbs gnupg
+RUN apt-get -q -y install linkchecker s3cmd python-dev python-setuptools python-lxml python-webunit python-docutils python-reportlab python-pypdf gnuplot python-pip tcpwatch-httpproxy dpkg-dev devscripts debhelper cdbs gnupg redis-server
 RUN easy_install -f http://funkload.nuxeo.org/snapshots/ -U funkload
 RUN echo "deb https://get.docker.io/ubuntu docker main" > /etc/apt/sources.list.d/docker.list
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9

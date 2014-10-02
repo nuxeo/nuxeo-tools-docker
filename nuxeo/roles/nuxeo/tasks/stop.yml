@@ -1,5 +1,0 @@
----
-- name: Stop nuxeo
-  service: name={{nuxeo_service_name}} state=stopped
-  failed_when: false
-

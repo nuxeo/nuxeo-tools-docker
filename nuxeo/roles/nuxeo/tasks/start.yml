@@ -1,4 +1,0 @@
----
-- name: Start nuxeo
-  service: name={{nuxeo_service_name}} state=started
-

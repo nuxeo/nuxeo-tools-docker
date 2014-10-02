@@ -1,0 +1,106 @@
+---
+- name: Remove old temporary dir if it still exists
+  file: path={{nuxeo_base}}/ansible_tmp state=absent
+- name: Create temporary dir for unzip
+  file: path={{nuxeo_base}}/ansible_tmp state=directory owner={{nuxeo_user}} group={{nuxeo_user}}
+- name: Unzip distribution # The unarchive module is too noisy
+  shell: unzip -q -d {{nuxeo_base}}/ansible_tmp {{nuxeo_base}}/distribution-{{nuxeo_version}}.zip
+  sudo_user: "{{nuxeo_user}}"
+- name: Find out distribution directory
+  shell: ls {{nuxeo_base}}/ansible_tmp/
+  register: distrib_dir
+- name: Register date
+  local_action: shell date +"%Y%m%d-%H%M%S"
+  register: date
+- name: Move distribution to final location
+  shell: mv {{nuxeo_base}}/ansible_tmp/{{distrib_dir.stdout}} {{nuxeo_base}}/nuxeo-{{nuxeo_version}}-{{date.stdout}}
+  sudo_user: "{{nuxeo_user}}"
+- name: Remove temporary dir
+  file: path={{nuxeo_base}}/ansible_tmp state=absent
+- name: Stop nuxeo
+  service: name={{nuxeo_service_name}} state=stopped
+  failed_when: false
+- name: Check if instance is registered
+  stat: path={{nuxeo_conf['nuxeo.data.dir']|default(nuxeo_base+'/data')}}/instance.clid
+  register: instance_clid
+- name: Save registration information
+  shell: cp {{nuxeo_conf['nuxeo.data.dir']|default(nuxeo_base+'/data')}}/instance.clid {{nuxeo_base}}/instance.clid
+  when: instance_clid.stat.exists
+- name: Find out nuxeo.conf location
+  set_fact:
+    nuxeo_conf_dir: "{{nuxeo_conf_dir|default(nuxeo_base+'/conf')}}"
+- name: Ensure config dir exists
+  file: path={{nuxeo_conf_dir}} state=directory owner={{nuxeo_user}} group={{nuxeo_user}} mode=0700
+- name: Update distribution symlink
+  file: src={{nuxeo_base}}/nuxeo-{{nuxeo_version}}-{{date.stdout}} dest={{nuxeo_base}}/server state=link owner={{nuxeo_user}} group={{nuxeo_user}}
+- name: Delete data dir
+  file: path={{nuxeo_conf['nuxeo.data.dir']|default(nuxeo_base+'/data')}} state=absent
+  when: reset_data is defined and reset_data
+- name: Ensure data dir exists
+  file: path={{nuxeo_conf['nuxeo.data.dir']|default(nuxeo_base+'/data')}} state=directory owner={{nuxeo_user}} group={{nuxeo_user}} mode=0700
+- name: Ensure log dir exists
+  file: path={{nuxeo_conf['nuxeo.log.dir']|default(nuxeo_base+'/log')}} state=directory owner={{nuxeo_user}} group={{nuxeo_user}} mode=0700
+- name: Ensure tmp dir exists
+  file: path={{nuxeo_conf['nuxeo.tmp.dir']|default(nuxeo_base+'/tmp')}} state=directory owner={{nuxeo_user}} group={{nuxeo_user}} mode=0700
+- name: Ensure pid dir exists
+  file: path={{nuxeo_conf['nuxeo.pid.dir']|default(nuxeo_base+'/run')}} state=directory owner={{nuxeo_user}} group={{nuxeo_user}} mode=0700
+- name: Replace old config file
+  shell: mv {{nuxeo_base}}/server/bin/nuxeo.conf {{nuxeo_conf_dir}}/nuxeo.conf
+  sudo_user: "{{nuxeo_user}}"
+- name: Update nuxeo_conf variables
+  lineinfile:  dest={{nuxeo_conf_dir}}/nuxeo.conf line="{{item.key}}={{item.value}}" regexp="#?{{item.key}}\s*=.*"
+  with_dict: nuxeo_conf
+- name: Update nuxeo.data.dir (default)
+  lineinfile: dest={{nuxeo_conf_dir}}/nuxeo.conf line="nuxeo.data.dir={{nuxeo_base}}/data" regexp="#?nuxeo.data.dir\s*=.*"
+  when: nuxeo_conf['nuxeo.data.dir'] is not defined
+- name: Update nuxeo.log.dir (default)
+  lineinfile: dest={{nuxeo_conf_dir}}/nuxeo.conf line="nuxeo.log.dir={{nuxeo_base}}/log" regexp="#?nuxeo.log.dir\s*=.*"
+  when: nuxeo_conf['nuxeo.log.dir'] is not defined
+- name: Update nuxeo.tmp.dir
+  lineinfile: dest={{nuxeo_conf_dir}}/nuxeo.conf line="nuxeo.tmp.dir={{nuxeo_base}}/tmp" regexp="#?nuxeo.tmp.dir\s*=.*"
+  when: nuxeo_conf['nuxeo.tmp.dir'] is not defined
+- name: Update nuxeo.pid.dir
+  lineinfile: dest={{nuxeo_conf_dir}}/nuxeo.conf line="nuxeo.pid.dir={{nuxeo_base}}/run" regexp="#?nuxeo.pid.dir\s*=.*"
+  when: nuxeo_conf['nuxeo.pid.dir'] is not defined
+- name: Update templates (default)
+  lineinfile: dest={{nuxeo_conf_dir}}/nuxeo.conf line="nuxeo.templates=postgresql" regexp="#?nuxeo.templates\s*=.*"
+  when: nuxeo_conf['nuxeo.templates'] is not defined
+- name: Update nuxeo.db.host
+  lineinfile: dest={{nuxeo_conf_dir}}/nuxeo.conf line="nuxeo.db.host={{dbhost}}" regexp="#?nuxeo.db.host\s*=.*"
+- name: Update nuxeo.db.port
+  lineinfile: dest={{nuxeo_conf_dir}}/nuxeo.conf line="nuxeo.db.port={{dbport}}" regexp="#?nuxeo.db.port\s*=.*"
+- name: Update nuxeo.db.name
+  lineinfile: dest={{nuxeo_conf_dir}}/nuxeo.conf line="nuxeo.db.name={{dbname}}" regexp="#?nuxeo.db.name\s*=.*"
+- name: Update nuxeo.db.user
+  lineinfile: dest={{nuxeo_conf_dir}}/nuxeo.conf line="nuxeo.db.user={{dbuser}}" regexp="#?nuxeo.db.user\s*=.*"
+- name: Update nuxeo.db.password
+  lineinfile: dest={{nuxeo_conf_dir}}/nuxeo.conf line="nuxeo.db.password={{dbpass}}" regexp="#?nuxeo.db.password\s*=.*"
+- name: Remove packages dir (older nuxeo versions)
+  file: path={{nuxeo_conf['nuxeo.data.dir']|default(nuxeo_base+'/data')}}/packages state=absent
+- name: Ensure nuxeoctl is executable
+  file: path={{nuxeo_base}}/server/bin/nuxeoctl mode=0755
+- name: Check if instance registration info is backed up
+  stat: path={{nuxeo_base}}/instance.clid
+  register: backedup_clid
+- name: Restore registration information
+  shell: cp {{nuxeo_base}}/instance.clid {{nuxeo_conf['nuxeo.data.dir']|default(nuxeo_base+'/data')}}/instance.clid
+  when: backedup_clid.stat.exists
+- name: Init packages
+  shell: "{{nuxeo_base}}/server/bin/nuxeoctl mp-init"
+  environment:
+    NUXEO_CONF: "{{nuxeo_conf_dir}}/nuxeo.conf"
+  sudo_user: "{{nuxeo_user}}"
+- name: Install packages
+  shell: "{{nuxeo_base}}/server/bin/nuxeoctl --accept=true {{'--snapshot' if nuxeo_is_snapshot|bool else ''}} mp-install {{nuxeo_packages|default([])|join(' ')}}"
+  environment:
+    NUXEO_CONF: "{{nuxeo_conf_dir}}/nuxeo.conf"
+  sudo_user: "{{nuxeo_user}}"
+- name: Find old distributions
+  shell: find . -maxdepth 1 -name 'nuxeo-*' -type d -printf '%T@ %p\n' | sort -k 1nr | awk '{print $NF}' | tail -n +4
+  args:
+    chdir: "{{nuxeo_base}}"
+  register : old_distribs
+- name: Remove old distributions
+  file: path={{nuxeo_base}}/{{item}} state=absent
+  with_items: old_distribs.stdout_lines
+

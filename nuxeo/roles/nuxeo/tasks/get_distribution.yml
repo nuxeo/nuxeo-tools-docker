@@ -1,0 +1,33 @@
+---
+- name: Check for snapshot
+  set_fact:
+    nuxeo_is_snapshot: "{{'-SNAPSHOT' in nuxeo_version or '-SNAPSHOT' in nuxeo_distribution|default('')}}"
+- name: debug
+  debug: var=nuxeo_is_snapshot
+- name: Identify distribution repository
+  set_fact:
+    nexus_repo: "{{'public-snapshots' if nuxeo_is_snapshot|bool else 'public-releases'}}"
+  when: nuxeo_distribution is not defined
+- name: Identify distribution URL
+  set_fact:
+    nuxeo_url: "{{nuxeo_distribution if nuxeo_distribution is defined else nexus_url|format(nexus_repo,nuxeo_version)}}"
+- name: Download release
+  get_url: url={{nuxeo_url}} dest={{nuxeo_base}}/distribution-{{nuxeo_version}}.zip owner={{nuxeo_user}} group={{nuxeo_user}}
+  when: '("http://" in nuxeo_url or "https://" in nuxeo_url) and not nuxeo_is_snapshot|bool'
+  register: download_release
+- name: Upload release
+  copy: src={{nuxeo_distribution}} dest={{nuxeo_base}}/distribution-{{nuxeo_version}}.zip owner={{nuxeo_user}} group={{nuxeo_user}}
+  when: '("http://" not in nuxeo_url and "https://" not in nuxeo_url) and not nuxeo_is_snapshot|bool'
+  register: upload_release
+- name: Download snapshot
+  get_url: url={{nuxeo_url}} dest={{nuxeo_base}}/distribution-{{nuxeo_version}}.zip owner={{nuxeo_user}} group={{nuxeo_user}} force={{update_snapshots}}
+  when: '("http://" in nuxeo_url or "https://" in nuxeo_url) and nuxeo_is_snapshot|bool'
+  register: download_snapshot
+- name: Upload snapshot
+  copy: src={{nuxeo_distribution}} dest={{nuxeo_base}}/distribution-{{nuxeo_version}}.zip owner={{nuxeo_user}} group={{nuxeo_user}} force={{update_snapshots}}
+  when: '("http://" not in nuxeo_url and "https://" not in nuxeo_url) and nuxeo_is_snapshot|bool'
+  register: upload_snapshot
+- name: Check if distribution changed
+  set_fact:
+    distribution_changed: "{{download_release.changed or upload_release.changed or download_snapshot.changed or upload_snapshot.changed}}"
+

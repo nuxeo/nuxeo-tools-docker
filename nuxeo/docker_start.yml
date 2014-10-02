@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  gather_facts: no
+  sudo: no
+  connection: local
+  tasks:
+  - name: Check test container image
+    docker_image: path="docker" name="nuxeo/ansibletest" state=present
+  - name: Start test containers
+    docker: image="nuxeo/ansibletest" expose="{{expose|default([])|join(',')}}" ports="{{[22]|union(ports|default([]))|join(',')}}" volumes="{{ lookup('env','HOME') }}/.ssh/id_rsa.pub:/pubkey:ro" name={{item}}
+    with_sequence: start=0 end={{count|int|default(1) - 1}} format={{dgroups|join('_')|default('ansibletest')}}_%d
+    register: docker_containers
+  - name: Display IP address and port mappings for containers
+    debug: msg={{docker_containers.results[item|int].ansible_facts.docker_containers[0]["NetworkSettings"]["Ports"]["22/tcp"][0]["HostIp"]}}:{{docker_containers.results[item|int].ansible_facts.docker_containers[0]["NetworkSettings"]["Ports"]["22/tcp"][0]["HostPort"]}}
+    with_sequence: start=0 end={{count|int|default(1) - 1}}
+  - name: Add containers to inventory
+    add_host: name={{docker_containers.results[item|int].ansible_facts.docker_containers[0]["NetworkSettings"]["Ports"]["22/tcp"][0]["HostIp"]}}:{{docker_containers.results[item|int].ansible_facts.docker_containers[0]["NetworkSettings"]["Ports"]["22/tcp"][0]["HostPort"]}} groups={{dgroups|join(',')}}
+    with_sequence: start=0 end={{count|int|default(1) - 1}}
+  - name: Wait for containers sshd
+    wait_for: >
+      state=started
+      host={{docker_containers.results[item|int].ansible_facts.docker_containers[0]["NetworkSettings"]["Ports"]["22/tcp"][0]["HostIp"]}}
+      port={{docker_containers.results[item|int].ansible_facts.docker_containers[0]["NetworkSettings"]["Ports"]["22/tcp"][0]["HostPort"]}}
+    with_sequence: start=0 end={{count|int|default(1) - 1}}
+  - name: Wait 5 more seconds
+    shell: sleep 5
+

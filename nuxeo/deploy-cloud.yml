@@ -1,0 +1,57 @@
+---
+
+# Common setup
+- hosts: db:nuxeo
+  gather_facts: yes
+  sudo: yes
+  roles:
+  - {role: common}
+
+# Install packages and download distribution
+- hosts: db
+  gather_facts: no
+  sudo: yes
+  roles:
+  - {role: db, stage: init}
+- hosts: nuxeo
+  gather_facts: no
+  sudo: yes
+  roles:
+  - {role: nuxeo, stage: init}
+
+# Prepare for updates
+- hosts: nuxeo
+  gather_facts: no
+  sudo: yes
+  roles:
+  - {role: nuxeo, stage: stop}
+- hosts: db
+  gather_facts: no
+  sudo: yes
+  roles:
+  - {role: db, stage: stop}
+
+# Update configuration/data
+- hosts: db
+  gather_facts: no
+  sudo: yes
+  roles:
+  - {role: db, stage: setup}
+- hosts: nuxeo
+  gather_facts: no
+  sudo: yes
+  roles:
+  - {role: nuxeo, stage: setup}
+
+# Complete update
+- hosts: db
+  gather_facts: no
+  sudo: yes
+  roles:
+  - {role: db, stage: start}
+- hosts: nuxeo
+  gather_facts: no
+  sudo: yes
+  roles:
+  - {role: nuxeo, stage: start}
+

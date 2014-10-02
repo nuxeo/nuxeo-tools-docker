@@ -1,0 +1,51 @@
+---
+- name: Install nuxeo dependencies
+  apt: name={{item}} state=present
+  with_items:
+  - openjdk-7-jdk
+  - libreoffice
+  - imagemagick
+  - poppler-utils
+  - ffmpeg2theora
+  - ufraw
+  - libwpd-tools
+- name: Add multiverse repositorise
+  apt_repository: repo="{{item}}" update_cache=false
+  with_items:
+    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse'
+    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse'
+    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-security multiverse'
+  register: multiverse_installed
+  when: ansible_distribution == 'Ubuntu' and compile_ffmpeg
+- name: Refresh apt cache
+  apt: update_cache=true
+  when: compile_ffmpeg and multiverse_installed.changed
+- name: Install git
+  apt: name=git state=present
+  when: compile_ffmpeg
+- name: Check for system ffmpeg
+  stat: path=/usr/bin/ffmpeg
+  register: system_ffmpeg
+  when: compile_ffmpeg
+- name: Check for custom ffmpeg
+  stat: path=/usr/local/bin/ffmpeg
+  register: custom_ffmpeg
+  when: compile_ffmpeg
+- name: Check if we should compile ffmpeg
+  set_fact:
+    ffmpeg_exists: "{{system_ffmpeg.stat.exists or custom_ffmpeg.stat.exists}}"
+  when: compile_ffmpeg
+- name: Get ffmpeg compile scripts
+  git: repo=https://github.com/nuxeo/ffmpeg-nuxeo.git dest=/tmp/ffmpeg
+  when: compile_ffmpeg and not ffmpeg_exists|bool
+- name: Compile ffmpeg
+  shell: ./build-all.sh true
+  args:
+    chdir: /tmp/ffmpeg
+  environment:
+    BUILD=YASM: true
+  when: compile_ffmpeg and not ffmpeg_exists|bool
+- name: Cleanup ffmpeg build directory
+  file: path=/tmp/ffmpeg state=absent
+  when: compile_ffmpeg
+

@@ -1,0 +1,10 @@
+[cloud:children]
+db
+nuxeo
+
+[db]
+myhost
+
+[nuxeo]
+myhost
+

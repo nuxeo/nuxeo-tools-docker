@@ -1,0 +1,8 @@
+---
+nuxeo_version: 5.9.5
+update_snapshots: false
+reset_data: false
+dbname: nuxeo
+dbuser: nuxeo
+dbpass: supersecretpass
+

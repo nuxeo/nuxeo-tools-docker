@@ -1,0 +1,44 @@
+---
+- include: docker_start.yml
+  vars:
+    dgroups:
+    - docker
+    - nuxeo
+    count: 1
+    expose:
+    - 8080
+    ports:
+    - 0.0.0.0:8080:8080
+
+- hosts: nuxeo
+  gather_facts: yes
+  sudo: yes
+  roles:
+
+  # Command setup
+  - {role: common}
+
+  # Install packages and download distribution
+  - {role: db, stage: init}
+  - {role: nuxeo, stage: init}
+
+  # Prepare for updates
+  - {role: nuxeo, stage: stop}
+  - {role: db, stage: stop}
+
+  # Update configuration/data
+  - {role: db, stage: setup}
+  #- {role: db, stage: setup, when: pginstall.changed or distribution_changed|bool}
+  - {role: nuxeo, stage: setup}
+  #- {role: db, stage: setup, when: distribution_changed|bool}
+
+  # Complete update
+  - {role: db, stage: start}
+  - {role: nuxeo, stage: start}
+
+#- include: docker_stop.yml
+#  vars:
+#    dgroups:
+#    - nuxeo
+#    count: 1
+

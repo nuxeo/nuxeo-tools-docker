@@ -1,0 +1,13 @@
+---
+nuxeo_version: 5.9.6-SNAPSHOT
+update_snapshots: true
+reset_data: true
+dbname: nuxeo
+dbuser: nuxeo
+dbpass: supersecretpass
+nuxeo_packages:
+- nuxeo-dm
+- nuxeo-dam
+- nuxeo-drive
+- nuxeo-template-rendering
+- nuxeo-web-mobile-dm

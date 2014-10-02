@@ -1,0 +1,19 @@
+---
+#nuxeo_distribution: url to a distribution zip - takes precedence over nuxeo_version
+#nuxeo_version: distribution is fetched in the maven repository
+nexus_url: "https://maven.nuxeo.org/nexus/service/local/artifact/maven/redirect?r=%s&g=org.nuxeo.ecm.distribution&a=nuxeo-distribution-tomcat&v=%s&e=zip&c=nuxeo-cap"
+update_snapshots: false
+compile_ffmpeg: true
+reset_data: false
+nuxeo_service_name: "nuxeo"
+nuxeo_user: "nuxeo"
+nuxeo_base: "/opt/nuxeo"
+dbhost: "127.0.0.1"
+dbport: 5432
+dbname: "nuxeo"
+dbuser: "nuxeo"
+dbpass: "nuxeo"
+nuxeo_conf: {}
+nuxeo_packages:
+- nuxeo-dm
+

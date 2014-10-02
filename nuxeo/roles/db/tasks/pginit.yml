@@ -1,0 +1,9 @@
+---
+- name: Prepare db init script
+  copy: src=dbsetup.sql dest=/tmp/dbsetup.sql owner=postgres mode=0600
+- name: Execute db init script
+  command: psql template1 -f /tmp/dbsetup.sql
+  sudo_user: postgres
+- name: Cleanup db init script
+  file: path=/tmp/dbsetup.sql state=absent
+

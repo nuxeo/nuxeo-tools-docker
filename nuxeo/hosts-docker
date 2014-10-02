@@ -1,0 +1,7 @@
+[docker:children]
+db
+nuxeo
+
+[db]
+
+[nuxeo]

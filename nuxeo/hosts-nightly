@@ -1,0 +1,10 @@
+[nightly:children]
+db
+nuxeo
+
+[db]
+nightly.nuxeo.com
+
+[nuxeo]
+nightly.nuxeo.com
+

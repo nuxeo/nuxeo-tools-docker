@@ -1,0 +1,77 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          nuxeo
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop Nuxeo
+# Description:       Start/stop Nuxeo
+### END INIT INFO
+
+DESC="Nuxeo"
+
+NUXEO_USER={{nuxeo_user}}
+NUXEOCTL="{{nuxeo_base}}/server/bin/nuxeoctl"
+NUXEO_CONF="{{nuxeo_conf_dir|default(nuxeo_base+'/conf')+'/nuxeo.conf'}}"
+NUXEO_PID_DIR="{{nuxeo_conf['nuxeo.pid.dir']|default(nuxeo_base+'/run')}}"
+export NUXEO_CONF
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+
+create_pid_dir() {
+    mkdir -p $NUXEO_PID_DIR
+    chown $NUXEO_USER:$NUXEO_USER $NUXEO_PID_DIR
+}
+
+# Change ulimit to minimum needed by Nuxeo
+ulimit -n 2048
+
+case "$1" in
+  start)
+        log_daemon_msg "Starting" "$DESC\n"
+        create_pid_dir
+        su $NUXEO_USER -c "$NUXEOCTL --quiet startbg"
+        ES=$?
+        log_end_msg $ES
+        ;;
+  stop)
+        log_daemon_msg "Stopping" "$DESC\n"
+        su $NUXEO_USER -c "$NUXEOCTL --quiet stop"
+        ES=$?
+        log_end_msg $ES
+        ;;
+  restart)
+        create_pid_dir
+        su $NUXEO_USER -c "$NUXEOCTL --quiet restart"
+        ES=$?
+        log_end_msg $ES
+        ;;
+  force-reload)
+        create_pid_dir
+        su $NUXEO_USER -c "$NUXEOCTL --quiet restart"
+        ES=$?
+        log_end_msg $ES
+        ;;
+  status)
+        if [ ! -f $NUXEO_CONF ]; then
+            exit 3
+        elif [ ! -f $NUXEOCTL ]; then
+            exit 3
+        else
+            su $NUXEO_USER -c "$NUXEOCTL --quiet status"
+            exit $?
+        fi
+        ;;
+  showconf)
+        su $NUXEO_USER -c "$NUXEOCTL --xml showconf"
+        exit $?
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart|force-reload|status|showconf}" >&2
+        exit 3
+        ;;
+esac
+

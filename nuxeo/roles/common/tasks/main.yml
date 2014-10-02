@@ -1,0 +1,19 @@
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=7200
+- name: Base packages
+  apt: name={{item}} state=present
+  with_items:
+  - locales
+  - unzip
+- name: Check for /etc/default/locale
+  stat: path=/etc/default/locale
+  register: locale_path
+- name: Generate en_US.UTF-8 locale
+  shell: locale-gen en_US.UTF-8
+  when: locale_path.stat.exists == false
+- name: Reconfigure locales package
+  shell: dpkg-reconfigure locales
+  when: locale_path.stat.exists == false
+- name: Generate /etc/default/locale
+  shell: update-locale LANG=en_US.UTF-8
+  when: locale_path.stat.exists == false

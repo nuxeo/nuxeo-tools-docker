@@ -1,0 +1,9 @@
+---
+nuxeo_version: 5.9.6-SNAPSHOT
+nexus_url: "http://maven.in.nuxeo.com/nexus/service/local/artifact/maven/redirect?r=%s&g=org.nuxeo.ecm.distribution&a=nuxeo-distribution-tomcat&v=%s&e=zip&c=nuxeo-cap"
+update_snapshots: false
+reset_data: false
+dbname: nuxeo
+dbuser: nuxeo
+dbpass: supersecretpass
+

@@ -1,0 +1,15 @@
+---
+reset_data: false
+dbhost: 127.0.0.1
+dbport: 5432
+dbname: nuxeo
+dbuser: nuxeo
+dbpass: nuxeo
+max_prepared_transactions: 64
+work_mem: 24MB
+maintenance_work_mem: 128MB
+wal_buffers: 16MB
+max_connections: 100
+shared_buffers: 1GB
+effective_cache_size: 2GB
+

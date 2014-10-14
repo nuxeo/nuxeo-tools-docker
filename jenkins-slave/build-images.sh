@@ -20,12 +20,7 @@ scp hudson@blancheneige:.ssh/id_rsa slave-config/tmpfiles/jenkins_id_rsa
 scp hudson@blancheneige:bin/slave.jar slave-config/tmpfiles/slave.jar
 cat slave-config/files/jenkins_id_rsa.pub /opt/build/hudson/authorized_keys/* > slave-config/tmpfiles/authorized_keys
 
-cp /opt/build/keystores/gpg/nxpkg-secret.key slave-config/tmpfiles/nxpkg-secret.key
-cp /opt/build/keystores/gpg/nxpkg-public.key slave-config/tmpfiles/nxpkg-public.key
-
-cp /opt/build/keystores/keytabs/krb5.conf slave-config/tmpfiles/krb5.conf
-cp /opt/build/keystores/keytabs/jenkins.keytab slave-config/tmpfiles/jenkins.keytab
-
+cp -a /opt/build/keystores slave-config/tmpfiles/keystores
 
 docker build -t nuxeo/jenkins-slave-config slave-config
 

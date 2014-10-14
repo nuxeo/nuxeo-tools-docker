@@ -48,3 +48,6 @@ ADD tmpfiles/nxpkg-public.key /opt/jenkins/nxpkg-public.key
 RUN su jenkins -c 'gpg --import /opt/jenkins/nxpkg-public.key'
 RUN rm /opt/jenkins/nxpkg-public.key
 
+ADD tmpfiles/krb5.conf /etc/krb5.conf
+ADD tmpfiles/jenkins.keytab /opt/build/keystores/keytabs/jenkins.keytab
+

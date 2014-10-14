@@ -51,11 +51,11 @@ RUN ln -s /opt/build/tools/apache-maven-3.1.1 /opt/build/tools/maven-3.1
 RUN ln -s /opt/build/tools/apache-maven-3.1.1 /opt/build/tools/maven3.1
 RUN rm /tmp/maven-3.1.1.tar.gz
 
-RUN wget -O /tmp/maven-3.2.1.tar.gz http://archive.apache.org/dist/maven/binaries/apache-maven-3.2.1-bin.tar.gz
-RUN tar xzf /tmp/maven-3.2.1.tar.gz -C /opt/build/tools
-RUN ln -s /opt/build/tools/apache-maven-3.2.1 /opt/build/tools/maven-3.2
-RUN ln -s /opt/build/tools/apache-maven-3.2.1 /opt/build/tools/maven3.2
-RUN rm /tmp/maven-3.2.1.tar.gz
+RUN wget -O /tmp/maven-3.2.3.tar.gz http://www.us.apache.org/dist/maven/maven-3/3.2.3/binaries/apache-maven-3.2.3-bin.tar.gz
+RUN tar xzf /tmp/maven-3.2.3.tar.gz -C /opt/build/tools
+RUN ln -s /opt/build/tools/apache-maven-3.2.3 /opt/build/tools/maven-3.2
+RUN ln -s /opt/build/tools/apache-maven-3.2.3 /opt/build/tools/maven3.2
+RUN rm /tmp/maven-3.2.3.tar.gz
 
 RUN ln -s /opt/build/tools/maven-3.2/bin/mvn /usr/bin/mvn
 
@@ -101,4 +101,11 @@ RUN su jenkins -c 'cd /opt/jenkins/maven-android-sdk-deployer && source /opt/bui
 # Add Oracle JDBC drivers
 ADD tmpfiles/m2repo/com /opt/jenkins/.m2/repository/com
 RUN chown -R jenkins /opt/jenkins/.m2/repository/com
+
+# Install nodejs and friends
+RUN mkdir -p /usr/local/src
+RUN wget -O/usr/local/src/node-v0.10.32.tar.gz http://nodejs.org/dist/v0.10.32/node-v0.10.32.tar.gz
+RUN cd /usr/local/src && tar xzf node-v0.10.32.tar.gz
+RUN cd /usr/local/src/node-v0.10.32 && ./configure && make && make install
+RUN npm install -g yo grunt-cli gulp bower
 

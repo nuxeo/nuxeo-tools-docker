@@ -19,7 +19,14 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -q -y upgrade
 
 # Install basic tools
-RUN apt-get -q -y install ssh sudo lynx links curl wget sysstat logtail vim build-essential zip unzip moreutils apt-transport-https
+RUN apt-get -q -y install ssh sudo lynx links curl wget sysstat logtail vim build-essential zip unzip moreutils apt-transport-https locales
+
+# Update default locale
+RUN locale-gen en_US.UTF-8
+RUN dpkg-reconfigure locales
+RUN update-locale LANG=en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
 
 # Install tools for Jenkins
 RUN mkdir -p /opt/build/tools
@@ -84,6 +91,7 @@ RUN cd ffmpeg-nuxeo && ./build-all.sh true
 # Install Android SDK
 RUN apt-get -q -y install libstdc++6:i386 lib32z1 expect
 RUN curl -L -Oandroid-sdk-installer https://raw.githubusercontent.com/embarkmobile/android-sdk-installer/f11ccc15b6f9d43eb1e7a61d3bc0939cc3827545/android-sdk-installer
+RUN perl -p -i -E 's/-3L/-L/g' android-sdk-installer
 ENV ANDROID_COMPONENTS platform-tools,build-tools-18.1.0,android-17,sysimg-17,android-16,sysimg-16,android-8,sysimg-8,addon-google_apis-google-16,extra-android-support,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository
 RUN bash android-sdk-installer --install=$ANDROID_COMPONENTS --dir=/opt/build/tools/android-installer-broken
 RUN chown -R jenkins /opt/build/tools/android-installer-broken/*

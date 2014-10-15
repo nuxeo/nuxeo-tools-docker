@@ -40,7 +40,7 @@ RUN chown -R jenkins:jenkins /opt/jenkins
 RUN sh -c 'cp -Rp /opt/jenkins/ssh-broken /opt/jenkins/.ssh && rm -rf /opt/jenkins/ssh-broken'
 RUN sh -c 'cp -Rp /opt/jenkins/m2-broken/* /opt/jenkins/.m2/ && rm -rf /opt/jenkins/m2-broken'
 
-ADD tmpfiles/keystores /opt/build/
+ADD tmpfiles/keystores /opt/build/keystores
 RUN su jenkins -c 'gpg --allow-secret-key-import --import /opt/build/keystores/gpg/nxpkg-secret.key'
 RUN su jenkins -c 'gpg --import /opt/build/keystores/gpg/nxpkg-public.key'
 ADD tmpfiles/keystores/keytabs/krb5.conf /etc/krb5.conf

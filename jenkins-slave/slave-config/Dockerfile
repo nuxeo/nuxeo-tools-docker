@@ -24,6 +24,9 @@ RUN chmod 0600 /opt/jenkins/.netrc
 ADD tmpfiles/jenkins_s3cfg /opt/jenkins/.s3cfg
 RUN chmod 0600 /opt/jenkins/.s3cfg
 
+RUN mkdir -p /opt/build/hudson
+ADD tmpfiles/instance.clid /opt/build/hudson/instance.clid
+
 ADD files/jenkins_bashrc /opt/jenkins/.bashrc
 ADD files/jenkins_profile /opt/jenkins/.profile
 ADD files/jenkins_gitconfig /opt/jenkins/.gitconfig

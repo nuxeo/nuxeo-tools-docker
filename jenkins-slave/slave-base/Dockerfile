@@ -7,16 +7,10 @@ MAINTAINER Nuxeo Packagers <packagers@nuxeo.com>
 
 RUN useradd -d /opt/jenkins -m -s /bin/bash jenkins
 
-RUN echo "deb http://netboot.in.nuxeo.com/ubuntu/ trusty main restricted universe multiverse" > /etc/apt/sources.list
-RUN echo "deb http://netboot.in.nuxeo.com/ubuntu/ trusty-updates main restricted universe multiverse" >> /etc/apt/sources.list
-RUN echo "deb http://netboot.in.nuxeo.com/ubuntu/ trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list
-RUN echo "deb http://netboot.in.nuxeo.com/ubuntu-security/ trusty-security main restricted universe multiverse" >> /etc/apt/sources.list
-
-RUN dpkg --add-architecture i386
-RUN apt-get update
+ADD files/mirror.local /etc/apt/sources.list
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get -q -y upgrade
+RUN dpkg --add-architecture i386 && apt-get update && apt-get -q -y upgrade
 
 # Install basic tools
 RUN apt-get -q -y install ssh sudo lynx links curl wget sysstat logtail vim build-essential zip unzip moreutils apt-transport-https locales
@@ -77,10 +71,10 @@ RUN rm /tmp/gradle.zip
 # Install other misc dependencies
 RUN apt-get -q -y install linkchecker s3cmd python-dev python-setuptools python-lxml python-webunit python-docutils python-reportlab python-pypdf gnuplot python-pip tcpwatch-httpproxy dpkg-dev devscripts debhelper cdbs gnupg redis-server
 RUN easy_install -f http://funkload.nuxeo.org/snapshots/ -U funkload
-RUN echo "deb https://get.docker.io/ubuntu docker main" > /etc/apt/sources.list.d/docker.list
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
-RUN apt-get update
-RUN apt-get -q -y install lxc-docker
+#RUN echo "deb https://get.docker.io/ubuntu docker main" > /etc/apt/sources.list.d/docker.list
+#RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
+#RUN apt-get update
+#RUN apt-get -q -y install lxc-docker
 
 # Install converters
 RUN apt-get -q -y install imagemagick ffmpeg2theora ufraw poppler-utils libreoffice libwpd-tools gimp
@@ -116,4 +110,14 @@ RUN wget -O/usr/local/src/node-v0.10.32.tar.gz http://nodejs.org/dist/v0.10.32/n
 RUN cd /usr/local/src && tar xzf node-v0.10.32.tar.gz
 RUN cd /usr/local/src/node-v0.10.32 && ./configure && make && make install
 RUN npm install -g yo grunt-cli gulp bower
+
+# Install Java 6
+RUN wget -q -O/tmp/jdk6.bin "http://javadl.sun.com/webapps/download/AutoDL?BundleId=63975"
+WORKDIR /usr/lib/jvm
+RUN sh /tmp/jdk6.bin -noregister && ln -s /usr/lib/jvm/jdk1.6.0_33 /usr/lib/jvm/java-6-sun && rm /tmp/jdk6.bin
+
+# Install Java 8
+RUN wget -q -O/tmp/jdk-8-linux-x64.tgz --no-check-certificate --header 'Cookie: oraclelicense=accept-securebackup-cookie' 'http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.tar.gz'
+WORKDIR /usr/lib/jvm
+RUN tar xzf /tmp/jdk-8-linux-x64.tgz && ln -s /usr/lib/jvm/jdk1.8.0_25 /usr/lib/jvm/java-8 && rm /tmp/jdk-8-linux-x64.tgz
 

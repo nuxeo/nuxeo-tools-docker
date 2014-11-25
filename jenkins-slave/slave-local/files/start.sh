@@ -8,6 +8,9 @@ start-stop-daemon --start --name Xvfb --background --chuid jenkins --startas /us
 #start-stop-daemon --start --name x11vnc --background --chuid jenkins --startas /usr/bin/x11vnc -- -display :1 -nopw -forever -quiet
 start-stop-daemon --start --name fluxbox --background --chuid jenkins --startas /usr/bin/fluxbox -- -display :1
 
+# Update slave.jar
+su jenkins -c "scp hudson@blancheneige.in.nuxeo.com:bin/slave.jar /opt/jenkins/bin/slave.jar"
+
 chown jenkins:jenkins /opt/jenkins/workspace
 mkdir -p /var/run/sshd
 /usr/sbin/sshd -D

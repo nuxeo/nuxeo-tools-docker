@@ -5,9 +5,15 @@
 FROM       debian:wheezy
 MAINTAINER Nuxeo Packagers <packagers@nuxeo.com>
 
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update
+RUN apt-get -q -y install wget
+RUN wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2014.2_all.deb
+RUN dpkg -i deb-multimedia-keyring_2014.2_all.deb
+RUN echo "deb http://www.deb-multimedia.org wheezy main non-free" >> /etc/apt/sources.list
 RUN apt-get update
 
-ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -q -y upgrade
 
 # Install basic tools

@@ -6,9 +6,9 @@ git clone https://github.com/nuxeo/ffmpeg-nuxeo.git
 cd ffmpeg-nuxeo
 
 export BUILD_YASM=true
-./build-all.sh false
+./build-all.sh true
 mkdir -p /packages
 chmod 0777 /packages
-find . -type f -name '*.deb' -exec cp {} /packages/ \;
+find ffmpeg* -type f -name '*.deb' -exec cp {} /packages/ \;
 chmod 0666 /packages/*.deb
 

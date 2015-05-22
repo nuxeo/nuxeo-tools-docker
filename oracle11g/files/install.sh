@@ -41,6 +41,18 @@ su oracle -c '/opt/oracle/11g/bin/netca -silent -responsefile /tmpinstall/tmp/ne
 killall Xvfb
 
 echo
+echo "* Tuning and shutting down database"
+echo
+
+export ORACLE_BASE=/opt/oracle
+export ORACLE_HOME=/opt/oracle/11g
+
+su oracle -c '/opt/oracle/11g/bin/lsnrctl start'
+sleep 120
+echo "alter system set processes=300 scope=spfile" | su oracle -c "/opt/oracle/11g/bin/sqlplus sys/nuxeo@NUXEO as sysdba"
+echo "shutdown" | su oracle -c "/opt/oracle/11g/bin/sqlplus sys/nuxeo@NUXEO as sysdba"
+
+echo
 echo "* Cleaning up installation files"
 echo
 

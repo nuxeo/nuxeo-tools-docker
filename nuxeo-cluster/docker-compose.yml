@@ -1,0 +1,45 @@
+web:
+  build: apache
+  ports:
+  - "8080:80"
+  links:
+  - nuxeo1
+  - nuxeo2
+  volumes:
+  - ./logs:/logs:rw
+
+nuxeo1:
+  build: nuxeo
+  links:
+  - redis
+  - es
+  - db
+  environment:
+    distribution: file:///deploy/distrib.zip
+  volumes:
+  - ./deploy:/deploy:ro
+  - ./share:/share:rw
+  - ./logs:/logs:rw
+
+nuxeo2:
+  build: nuxeo
+  links:
+  - redis
+  - es
+  - db
+  environment:
+    distribution: file:///deploy/distrib.zip
+  volumes:
+  - ./deploy:/deploy:ro
+  - ./share:/share:rw
+  - ./logs:/logs:rw
+
+redis:
+  image: redis:3.0.4
+
+es:
+  image: elasticsearch:1.7.2
+
+db:
+  build: postgresql
+

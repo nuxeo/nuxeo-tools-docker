@@ -15,7 +15,7 @@ nuxeo1:
   - es
   - db
   environment:
-    distribution: file:///deploy/distrib.zip
+    distribution: lastbuild
   volumes:
   - ./deploy:/deploy:ro
   - ./share:/share:rw
@@ -28,7 +28,7 @@ nuxeo2:
   - es
   - db
   environment:
-    distribution: file:///deploy/distrib.zip
+    distribution: lastbuild
   volumes:
   - ./deploy:/deploy:ro
   - ./share:/share:rw

@@ -12,8 +12,9 @@ from lxml import html
 parser = argparse.ArgumentParser(description='Download nuxeo distribution')
 parser.add_argument('-v', dest='version', type=str, default='lastbuild',
     help='one of: ' + \
-         'lastbuild (downloads the last IT build distribution), ' + \
-         'lastsuccess (downloads the last successful IT build distribution), ' + \
+         'lastbuild (downloads the last build from nuxeo-distribution-master), ' + \
+         'lastitbuild (downloads the last IT build distribution), ' + \
+         'lastitsuccess (downloads the last successful IT build distribution), ' + \
          'version (downloads that version from community.nuxeo.com (SNAPSHOT) or cdn.nuxeo.com (release)), ' + \
          'url ((http:// or https://): downloads that URL, no resolving done), ' + \
          'file ((file:// or starts with /): uses that local file)')
@@ -26,12 +27,18 @@ arg = args.version
 output = args.output
 
 if arg == 'lastbuild':
+    base = 'http://qa.nuxeo.org/jenkins/job/nuxeo-distribution-master/lastBuild/artifact/nuxeo-distribution/nuxeo-distribution-tomcat/target/'
+    r = requests.get(base)
+    tree = html.fromstring(r.text)
+    archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-distribution-tomcat-") and contains(@href,"-nuxeo-cap.zip")]/@href')[0]
+    url = urlparse.urljoin(base, archive)
+elif arg == 'lastitbuild':
     base = 'http://qa.nuxeo.org/jenkins/job/IT-nuxeo-master-build/lastBuild/artifact/archives/'
     r = requests.get(base)
     tree = html.fromstring(r.text)
     archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-cap-") and contains(@href,"-tomcat.zip")]/@href')[0]
     url = urlparse.urljoin(base, archive)
-elif arg == 'lastsuccess':
+elif arg == 'lastitsuccess':
     base = 'http://qa.nuxeo.org/jenkins/job/IT-nuxeo-master-build/lastSuccessfulBuild/artifact/archives/'
     r = requests.get(base)
     tree = html.fromstring(r.text)
@@ -54,9 +61,10 @@ if arg.startswith('file://'):
 elif arg.startswith('/'):
     shutil.copy(url, output)
 else:
+    print 'Downloading %s ...' % url
     r = requests.get(url, stream=True)
     with open(output, 'wb') as f:
         for chunk in r.iter_content(chunk_size=1024): 
             if chunk:
                 f.write(chunk)
-
+    print "Download complete."

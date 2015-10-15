@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y \
     unzip python python-requests python-lxml \
     imagemagick ufraw ffmpeg2theora ffmpeg-nuxeo \
     poppler-utils exiftool libwpd-tools \
-    openjdk-7-jdk libreoffice redis-tools
+    openjdk-7-jdk libreoffice redis-tools \
+    postgresql-client
 
 RUN mkdir -p /usr/lib/jvm && \
     curl -o/tmp/jdk-8-linux-x64.tgz -L --insecure --header 'Cookie: oraclelicense=accept-securebackup-cookie' 'http://download.oracle.com/otn-pub/java/jdk/8u40-b26/jdk-8u40-linux-x64.tar.gz' && \

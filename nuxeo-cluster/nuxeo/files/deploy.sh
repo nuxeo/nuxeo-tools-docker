@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+mkdir -p /deploy /share /logs
+chmod 0777 /deploy /share /logs
+umask 0000
+
 cd /opt/nuxeo
 mkdir -p conf data tmp
 
@@ -41,23 +45,18 @@ printf "Cluster ID: %s\n" $clusterid
 
 mkdir -p /logs/nuxeo/nuxeo$clusterid
 chown -R nuxeo:nuxeo /logs/nuxeo/nuxeo$clusterid
-chmod 0777 /logs
-chmod 0777 /logs/nuxeo
-chmod 0777 /logs/nuxeo/nuxeo$clusterid
 
 if [ -d /share/binaries ]; then
     rm -rf /share/binaries
 fi
 mkdir -p /share/binaries
 chown nuxeo:nuxeo /share/binaries
-chmod 777 /share/binaries
 
 if [ -d /share/transientstore ]; then
     rm -rf /share/transientstore
 fi
 mkdir -p /share/transientstore
 chown nuxeo:nuxeo /share/transientstore
-chmod 0777 /share/transientstore
 
 if [ -d /opt/nuxeo/data/transientstores ]; then
     rm -rf /opt/nuxeo/data/transientstores
@@ -134,13 +133,21 @@ until nc -q 1 db 5432 < /dev/null; do
     sleep 1
 done
 
+# Setup Quartz tables (once)
+
+if [ "$(redis-cli --csv -h redis setnx quartz-setup 1)" == "1" ]; then
+    echo "db:5432:nuxeo:nuxeo:nuxeo" > ~/.pgpass
+    chmod 0600 ~/.pgpass
+    psql -h db -U nuxeo nuxeo -f server/templates/postgresql-quartz-cluster/bin/create-quartz-tables.sql
+fi
+
 # Wait for Elasticsearch
 
 until nc -q 1 es 9300 < /dev/null; do
     sleep 1
 done
 
-# Rolling nuxeo start
+# Staggered nuxeo start
 
 until [ "$(redis-cli --csv -h redis setnx nuxeo-starting 1)" == "1" ]; do
     echo "Waiting for other instance(s) to start..."

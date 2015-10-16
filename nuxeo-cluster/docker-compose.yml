@@ -3,6 +3,7 @@ web:
   ports:
   - "8080:80"
   links:
+  - redis
   - nuxeo1
   - nuxeo2
   volumes:
@@ -10,6 +11,7 @@ web:
 
 nuxeo1:
   build: nuxeo
+  hostname: nuxeo1
   links:
   - redis
   - es
@@ -23,6 +25,7 @@ nuxeo1:
 
 nuxeo2:
   build: nuxeo
+  hostname: nuxeo2
   links:
   - redis
   - es

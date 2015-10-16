@@ -4,7 +4,7 @@ RUN perl -p -i -e 's,archive.ubuntu.com,ubuntu.mirrors.ovh.net/ftp.ubuntu.com,g'
 RUN sed -i 's,^deb-src,#deb-src,g' /etc/apt/sources.list
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y apache2 curl
+RUN apt-get update && apt-get install -y apache2 curl redis-tools
 RUN a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests headers
 RUN printf "\nServerName localhost\n" >> /etc/apache2/apache2.conf
 

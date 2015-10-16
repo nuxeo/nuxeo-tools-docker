@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-mkdir -p /deploy /share /logs
-chmod 0777 /deploy /share /logs
+mkdir -p /share /logs
+chmod 0777 /share /logs
 umask 0000
 
 cd /opt/nuxeo
@@ -43,8 +43,8 @@ else
 fi
 printf "Cluster ID: %s\n" $clusterid
 
-mkdir -p /logs/nuxeo/nuxeo$clusterid
-chown -R nuxeo:nuxeo /logs/nuxeo/nuxeo$clusterid
+mkdir -p /logs/nuxeo/$(hostname)
+chown -R nuxeo:nuxeo /logs/nuxeo/$(hostname)
 
 if [ -d /share/binaries ]; then
     rm -rf /share/binaries
@@ -70,7 +70,7 @@ mv server/bin/nuxeo.conf conf/
 # dirs
 echo "nuxeo.data.dir=/opt/nuxeo/data" >> conf/nuxeo.conf
 echo "nuxeo.tmp.dir=/opt/nuxeo/tmp" >> conf/nuxeo.conf
-printf "nuxeo.log.dir=/logs/nuxeo/nuxeo%s\n" $clusterid >> conf/nuxeo.conf
+printf "nuxeo.log.dir=/logs/nuxeo/%s\n" $(hostname) >> conf/nuxeo.conf
 # db
 cat << EOF >> conf/nuxeo.conf
 nuxeo.templates=postgresql-quartz-cluster
@@ -139,7 +139,13 @@ if [ "$(redis-cli --csv -h redis setnx quartz-setup 1)" == "1" ]; then
     echo "db:5432:nuxeo:nuxeo:nuxeo" > ~/.pgpass
     chmod 0600 ~/.pgpass
     psql -h db -U nuxeo nuxeo -f server/templates/postgresql-quartz-cluster/bin/create-quartz-tables.sql
+    redis-cli --csv -h redis set quartz-done 1
 fi
+
+until [ "$(redis-cli --csv -h redis get quartz-done)" == '"1"' ]; do
+    echo "Waiting for Quartz setup completion..."
+    sleep 5
+done
 
 # Wait for Elasticsearch
 
@@ -149,11 +155,18 @@ done
 
 # Staggered nuxeo start
 
-until [ "$(redis-cli --csv -h redis setnx nuxeo-starting 1)" == "1" ]; do
-    echo "Waiting for other instance(s) to start..."
-    sleep 5
-done
-redis-cli --csv -h redis expire nuxeo-starting 30 > /dev/null
+# Add "concurrent: true" to the nuxeo nodes environment in docker-compose.yml for concurrent starts
+if [ "$concurrent" != "true" ]; then
+    until [ "$(redis-cli --csv -h redis setnx nuxeo-start-lock 1)" == "1" ]; do
+        starting=$(redis-cli --csv -h redis smembers nuxeo-starting | tr -d '"')
+        printf "Waiting for %s to start...\n" "$starting"
+        sleep 5
+    done
+    # lock will be removed by a "watcher" process when it detects the instance is up
+    # see apache/files/start.sh
+fi
+
+redis-cli --csv -h redis sadd nuxeo-starting $(hostname) > /dev/null
 
 nuxeoctl console
 

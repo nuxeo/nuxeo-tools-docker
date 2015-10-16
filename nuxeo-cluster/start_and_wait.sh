@@ -5,7 +5,6 @@ MAXWAIT=300 # 5 minutes
 cd $(dirname $0)
 ./cleanup.sh
 mkdir -p deploy share logs
-docker-compose build
 docker-compose up -d
 
 time1=$(date +"%s")

@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 NUM_INSTANCES=2
-MAXWAIT=300 # 5 minutes
+MAXWAIT=600 # 10 minutes
 
 # Wait for Redis
 

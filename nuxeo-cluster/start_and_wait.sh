@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-MAXWAIT=300 # 5 minutes
+MAXWAIT=600 # 10 minutes
 
 cd $(dirname $0)
 ./cleanup.sh

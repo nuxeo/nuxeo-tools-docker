@@ -83,7 +83,7 @@ EOF
 echo "repository.clustering.enabled=true" >> conf/nuxeo.conf
 printf "repository.clustering.id=%s\n" $clusterid >> conf/nuxeo.conf
 echo "repository.binary.store=/share/binaries" >> conf/nuxeo.conf
-printf "nuxeo.server.jvmRoute=route%s\n" $clusterid >> conf/nuxeo.conf
+printf "nuxeo.server.jvmRoute=%s\n" $(hostname) >> conf/nuxeo.conf
 # redis
 cat << EOF >> conf/nuxeo.conf
 nuxeo.redis.enabled=true

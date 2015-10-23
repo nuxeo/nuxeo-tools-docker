@@ -54,8 +54,8 @@ printf "Nuxeo nodes (%s) are available, starting Apache.\n" "$started"
 
 # Start Apache
 
-mkdir -p /deploy /share /logs
-chmod 0777 /deploy /share /logs
+mkdir -p /logs
+chmod 0777 /logs
 umask 0000
 mkdir -p /logs/apache
 chown www-data:www-data /logs/apache

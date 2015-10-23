@@ -19,6 +19,8 @@ The deployed Nuxeo can be customized:
 For instance, if you don't want to use redis, you can add "nuxeo.redis.enabled=false" to deploy/conf (the redis container will still be started).
 Or, if you want to use a custom distrib, you can put the zip in deploy/ and use distribution: file:///deploy/my-distrib.zip in docker-compose.yml.
 
+You can also override the Apache configuration by putting it in deploy/proxy.conf (the default is apache/files/proxy.conf).
+
 Requirements:
 - docker
 - docker-compose

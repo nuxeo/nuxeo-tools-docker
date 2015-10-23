@@ -3,6 +3,12 @@
 NUM_INSTANCES=2
 MAXWAIT=600 # 10 minutes
 
+# Check for proxy.conf override
+
+if [ -f /deploy/proxy.conf ]; then
+    cp /deploy/proxy.conf /etc/apache2/sites-available/proxy.conf
+fi
+
 # Wait for Redis
 
 until nc -q 1 redis 6379 < /dev/null; do

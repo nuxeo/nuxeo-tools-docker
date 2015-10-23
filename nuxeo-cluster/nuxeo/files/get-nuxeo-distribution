@@ -15,6 +15,9 @@ parser.add_argument('-v', dest='version', type=str, default='lastbuild',
          'lastbuild (downloads the last build from nuxeo-distribution-master), ' + \
          'lastitbuild (downloads the last IT build distribution), ' + \
          'lastitsuccess (downloads the last successful IT build distribution), ' + \
+         'lastlts (downloads the latest LTS from cdn.nuxeo.com), ' + \
+         'lastft (downloads the latest FastTrack from cdn.nuxeo.com), ' + \
+         'lastsnapshot (downloads the latest published snapshot from community.nuxeo.com), ' + \
          'version (downloads that version from community.nuxeo.com (SNAPSHOT) or cdn.nuxeo.com (release)), ' + \
          'url ((http:// or https://): downloads that URL, no resolving done), ' + \
          'file ((file:// or starts with /): uses that local file)')
@@ -46,6 +49,12 @@ elif arg == 'lastitsuccess':
     tree = html.fromstring(r.text)
     archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-cap-") and contains(@href,"-tomcat.zip")]/@href')[0]
     url = urlparse.urljoin(base, archive)
+elif arg == 'lastlts':
+    url = 'http://community.nuxeo.com/static/latest-lts/'
+elif arg == 'lastft':
+    url = 'http://community.nuxeo.com/static/latest-ft/'
+elif arg == 'lastsnapshot':
+    url = 'http://community.nuxeo.com/static/latest-snapshot/'
 elif arg.startswith('http://') or arg.startswith('https://'):
     url = arg
 elif arg.startswith('file://') or arg.startswith('/'):

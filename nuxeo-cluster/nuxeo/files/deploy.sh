@@ -7,6 +7,9 @@ umask 0000
 cd /opt/nuxeo
 mkdir -p conf data tmp
 
+# Fake SMTP server
+screen -d -m -S smtp java -jar /usr/lib/fakeSMTP.jar --start-server --background
+
 # Get distrib
 
 if [ -n "$distribution" ]; then

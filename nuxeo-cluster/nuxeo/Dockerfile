@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     imagemagick ufraw ffmpeg2theora ffmpeg-nuxeo \
     poppler-utils exiftool libwpd-tools \
     openjdk-7-jdk libreoffice redis-tools \
-    postgresql-client
+    postgresql-client screen
 
 RUN mkdir -p /usr/lib/jvm && \
     curl -o/tmp/jdk-8-linux-x64.tgz -L --insecure --header 'Cookie: oraclelicense=accept-securebackup-cookie' 'http://download.oracle.com/otn-pub/java/jdk/8u40-b26/jdk-8u40-linux-x64.tar.gz' && \
@@ -23,6 +23,13 @@ RUN mkdir -p /usr/lib/jvm && \
     ln -s /usr/lib/jvm/jdk1.8.0_40 /usr/lib/jvm/java-8 && \
     update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8/jre/bin/java 1081 && \
     update-alternatives --set java /usr/lib/jvm/java-8/jre/bin/java
+
+ADD http://nilhcem.github.com/FakeSMTP/downloads/fakeSMTP-latest.zip /tmp/fakeSMTP-latest.zip
+RUN mkdir /tmp/fakesmtp && \
+    unzip -q -d /tmp/fakesmtp /tmp/fakeSMTP-latest.zip && \
+    mv /tmp/fakesmtp/$(/bin/ls -1 /tmp/fakesmtp) /usr/lib/fakeSMTP.jar && \
+    rm -rf /tmp/fakesmtp && \
+    rm /tmp/fakeSMTP-latest.zip
 
 RUN useradd -u 1005 -d /opt/nuxeo -m -s /bin/bash nuxeo
 

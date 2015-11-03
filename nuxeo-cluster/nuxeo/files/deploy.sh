@@ -98,6 +98,7 @@ elasticsearch.addressList=es:9300
 elasticsearch.clusterName=elasticsearch
 elasticsearch.indexName=nuxeo
 elasticsearch.indexNumberOfReplicas=0
+elasticsearch.httpReadOnly.baseUrl=http://es:9200/
 audit.elasticsearch.enabled=true
 audit.elasticsearch.indexName=audit
 seqgen.elasticsearch.indexName=uidgen

@@ -21,6 +21,7 @@ RUN apt-get -q -y install git wget sudo
 
 # Add build script
 ADD package-all.sh /usr/local/src/package-all.sh
+RUN chmod +x /usr/local/src/package-all.sh
 
 ENTRYPOINT ["/usr/local/src/package-all.sh"]
 

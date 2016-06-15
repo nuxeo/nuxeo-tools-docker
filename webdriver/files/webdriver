@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+sleep 2
+
+exec java -jar /opt/selenium-server-standalone.jar
+
+

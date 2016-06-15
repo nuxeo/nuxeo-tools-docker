@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+rm -f /tmp/.X1-lock
+exec /usr/bin/Xvfb :1 -ac -screen 0 1280x1024x16
+

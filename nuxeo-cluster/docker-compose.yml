@@ -42,7 +42,7 @@ redis:
   image: redis:3.0.4
 
 es:
-  image: elasticsearch:1.7.2
+  image: elasticsearch:2.3.5
 
 db:
   build: postgresql

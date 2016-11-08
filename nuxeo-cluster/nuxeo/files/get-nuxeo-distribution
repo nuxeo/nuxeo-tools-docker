@@ -32,22 +32,22 @@ output = args.output
 print 'Looking for %s ...' % arg
 
 if arg == 'lastbuild':
-    base = 'https://qa.nuxeo.org/jenkins/job/master/job/nuxeo-distribution-master/lastSuccessfulBuild/artifact/nuxeo-distribution/nuxeo-distribution-tomcat/target/'
+    base = 'https://qa.nuxeo.org/jenkins/job/master/job/nuxeo-distribution-master/lastSuccessfulBuild/artifact/nuxeo-distribution/nuxeo-server-tomcat/target/'
     r = requests.get(base)
     tree = html.fromstring(r.text)
-    archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-distribution-tomcat-") and contains(@href,"-nuxeo-cap.zip")]/@href')[0]
+    archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-server-tomcat-") and contains(@href,".zip")]/@href')[0]
     url = urlparse.urljoin(base, archive)
 elif arg == 'lastitbuild':
     base = 'https://qa.nuxeo.org/jenkins/job/Deploy/job/IT-nuxeo-master-build/lastBuild/artifact/archives/'
     r = requests.get(base)
     tree = html.fromstring(r.text)
-    archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-cap-") and contains(@href,"-tomcat.zip")]/@href')[0]
+    archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-server-") and contains(@href,"-tomcat.zip")]/@href')[0]
     url = urlparse.urljoin(base, archive)
 elif arg == 'lastitsuccess':
     base = 'https://qa.nuxeo.org/jenkins/job/Deploy/job/IT-nuxeo-master-build/lastSuccessfulBuild/artifact/archives/'
     r = requests.get(base)
     tree = html.fromstring(r.text)
-    archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-cap-") and contains(@href,"-tomcat.zip")]/@href')[0]
+    archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-server-") and contains(@href,"-tomcat.zip")]/@href')[0]
     url = urlparse.urljoin(base, archive)
 elif arg == 'lastlts':
     url = 'http://community.nuxeo.com/static/latest-lts/'
@@ -60,9 +60,20 @@ elif arg.startswith('http://') or arg.startswith('https://'):
 elif arg.startswith('file://') or arg.startswith('/'):
     url = arg
 elif re.match('^[0-9\.]+$', arg):
-    url = 'http://cdn.nuxeo.com/nuxeo-%s/nuxeo-cap-%s-tomcat.zip' % (arg, arg)
+    v1 = int(arg.split(".")[0])
+    v2 = int(arg.split(".")[1])
+    if v1 < 8 or (v1 == 8 and v2 < 10):
+        url = 'http://cdn.nuxeo.com/nuxeo-%s/nuxeo-cap-%s-tomcat.zip' % (arg, arg)
+    else:
+        url = 'http://cdn.nuxeo.com/nuxeo-%s/nuxeo-server-%s-tomcat.zip' % (arg, arg)
 elif re.match('^[0-9\.]+-SNAPSHOT$', arg):
-    url = 'http://community.nuxeo.com/static/latest-snapshot/nuxeo-distribution-tomcat,%s,nuxeo-cap.zip' % arg[:-9]
+    v0 = arg.split("-")[0]
+    v1 = int(v0.split(".")[0])
+    v2 = int(v0.split(".")[1])
+    if v1 < 8 or (v1 == 8 and v2 < 10):
+        url = 'http://community.nuxeo.com/static/latest-snapshot/nuxeo-distribution-tomcat,%s,nuxeo-cap.zip' % arg[:-9]
+    else:
+        url = 'http://community.nuxeo.com/static/latest-snapshot/nuxeo-server,%s,tomcat.zip' % arg[:-9]
 else:
     print 'Unknown version: %s' % arg
     sys.exit(1)

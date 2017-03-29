@@ -1,10 +1,10 @@
-FROM ubuntu:trusty
+FROM ubuntu:xenial
 
 RUN perl -p -i -e 's,archive.ubuntu.com,ubuntu.mirrors.ovh.net/ftp.ubuntu.com,g' /etc/apt/sources.list
 RUN sed -i 's,^deb-src,#deb-src,g' /etc/apt/sources.list
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y apache2 curl redis-tools
+RUN apt-get update && apt-get install -y apache2 curl redis-tools netcat
 RUN a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests headers
 RUN printf "\nServerName localhost\n" >> /etc/apache2/apache2.conf
 

@@ -2,5 +2,5 @@
 
 cd $(dirname $0)
 ./cleanup.sh
-docker-compose build
+docker-compose build --no-cache
 

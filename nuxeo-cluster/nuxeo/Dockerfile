@@ -14,15 +14,8 @@ RUN apt-get update && apt-get install -y \
     imagemagick ufraw ffmpeg2theora ffmpeg-nuxeo \
     poppler-utils exiftool libwpd-tools \
     openjdk-8-jdk libreoffice redis-tools \
-    postgresql-client screen netcat
-
-RUN mkdir -p /usr/lib/jvm && \
-    curl -o/tmp/jdk-8-linux-x64.tgz -L --insecure --header 'Cookie: oraclelicense=accept-securebackup-cookie' 'http://download.oracle.com/otn-pub/java/jdk/8u111-b14/jdk-8u111-linux-x64.tar.gz' && \
-    tar xzf /tmp/jdk-8-linux-x64.tgz -C /usr/lib/jvm && \
-    rm /tmp/jdk-8-linux-x64.tgz && \
-    ln -s /usr/lib/jvm/jdk1.8.0_111 /usr/lib/jvm/java-8 && \
-    update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8/jre/bin/java 1081 && \
-    update-alternatives --set java /usr/lib/jvm/java-8/jre/bin/java
+    postgresql-client screen netcat \
+    openjdk-8-jdk
 
 ADD http://nilhcem.github.com/FakeSMTP/downloads/fakeSMTP-latest.zip /tmp/fakeSMTP-latest.zip
 RUN mkdir /tmp/fakesmtp && \

@@ -1,0 +1,61 @@
+/*
+ * (C) Copyright 2016 Nuxeo SA (http://nuxeo.com/) and contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * you may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contributors:
+ *     Frantz FISCHER <ffischer@nuxeo.com>
+ */
+ 
+timeout(10) {
+    node('DYNAMIC') {
+        stage('checkout') {
+            checkout scm
+            git_files_modified_for_repo = sh(returnStdout: true, script: 'git diff-tree --no-commit-id --name-only -r $(git rev-parse HEAD) | grep -c ^openldap || true').trim()
+            echo "Number of files changed for this commit -> ${git_files_modified_for_repo}"
+        }
+        if (git_files_modified_for_repo == "0") {
+            echo "No commit related to openldap, no need to build a new image."
+            currentBuild.result = 'SUCCESS'
+            return
+        }
+        stage('clean') {
+            dir("openldap") {
+                sh "make clean"
+            }
+        }
+        stage('build') {
+            dir("openldap") {
+                sh 'sed -i "s/^SCM-REF=.*/SCM-REF=$(git rev-parse HEAD)/g" Makefile'
+                sh "make build"
+            }
+        }
+        stage('test') {
+            dir("openldap") {
+                sh "make test"
+            }
+        }
+        stage('push') {
+            dir("openldap") {
+                sh "make push"
+            }
+        }
+        stage('tag') {
+            dir("openldap") {
+                sh "make tag"
+            }
+        }
+
+        step([$class: 'JiraIssueUpdater', issueSelector: [$class: 'DefaultIssueSelector'], scm: scm])
+    }
+}

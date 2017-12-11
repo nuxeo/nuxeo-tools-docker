@@ -1,0 +1,101 @@
+dn: ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: people
+description: Users are in this subtree
+
+dn: ou=sales,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: sales
+description: Sales users are in this subtree
+
+dn: ou=aggressive,ou=sales,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: aggressive
+description: Agressive sales users are in this subtree
+
+dn: ou=standard,ou=sales,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: standard
+description: Standard sales users are in this subtree
+
+dn: ou=dev,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: dev
+description: Dev people
+
+dn: ou=drive,ou=dev,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: drive
+description: Drive people
+
+dn: ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: core
+description: Core people
+
+dn: ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: webui
+description: WebUI people
+
+dn: ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: others
+description: Other people
+
+dn: ou=accounting,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: accounting
+description: Accounting users are in this subtree
+
+dn: ou=hr,ou=accounting,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: hr
+description: HR users are in this subtree
+
+dn: ou=financial,ou=accounting,ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: financial
+description: Financial users are in this subtree
+
+dn: ou=groups,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: groups
+description: Groups are in this subtree
+
+dn: ou=static,ou=groups,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: static
+description: Static groups are in this unit
+
+dn: ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: gou
+description: Static groups of unique names in this unit
+
+dn: ou=gon,ou=static,ou=groups,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: gon
+description: Static groups of names in this unit
+
+dn: ou=dynamic,ou=groups,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: dynamic
+description: Dynamic groups are in this unit

@@ -1,0 +1,26 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: accesslog
+
+dn: olcDatabase={2}hdb,cn=config
+changetype: add
+objectClass: olcDatabaseConfig
+objectClass: olcHdbConfig
+olcDatabase: {2}hdb
+olcDbDirectory: /var/lib/ldapaccesslog
+olcSuffix: cn=accesslog
+olcRootDN: cn=admin,dc=nuxeo,dc=com
+olcDbIndex: default eq
+olcDbIndex: entryCSN,objectClass,reqEnd,reqResult,reqStart
+
+dn: olcOverlay=accesslog,olcDatabase={1}hdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcAccessLogConfig
+olcOverlay: accesslog
+olcAccessLogDB: cn=accesslog
+olcAccessLogOps: writes
+olcAccessLogSuccess: TRUE
+# scan the accesslog DB every day, and purge entries older than 7 days
+olcAccessLogPurge: 07+00:00 01+00:00

@@ -1,0 +1,8 @@
+dn: uid=Administrator,ou=people,dc=nuxeo,dc=com
+objectClass: inetOrgPerson
+cn: Administrator full name
+uid: Administrator
+userPassword: Administrator
+mail: devnull+Administrator@nuxeo.com
+sn: Administrator lastname
+givenName: Administrator firstname

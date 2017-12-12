@@ -1,0 +1,176 @@
+dn: cn=goun00,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun00
+description: Group of unique names goun00
+uniquemember: uid=user120,ou=drive,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user121,ou=drive,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user122,ou=drive,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user123,ou=drive,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user124,ou=drive,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user125,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun01,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun01
+description: Group of unique names goun01
+uniquemember: uid=user126,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user127,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user128,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user129,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user130,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user131,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun02,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun02
+description: Group of unique names goun02
+uniquemember: uid=user132,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user133,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user134,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user135,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user136,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user137,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun03,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun03
+description: Group of unique names goun03
+uniquemember: uid=user138,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user139,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user140,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user141,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user142,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user143,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun04,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun04
+description: Group of unique names goun04
+uniquemember: uid=user144,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user145,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user146,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user147,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user148,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user149,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun05,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun05
+description: Group of unique names goun05
+uniquemember: uid=user150,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user151,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user152,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user153,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user154,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user155,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun06,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun06
+description: Group of unique names goun06
+uniquemember: uid=user156,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user157,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user158,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user159,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user160,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user161,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun07,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun07
+description: Group of unique names goun07
+uniquemember: uid=user162,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user163,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user164,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user165,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user166,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user167,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun08,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun08
+description: Group of unique names goun08
+uniquemember: uid=user168,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user169,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user170,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user171,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user172,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user173,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun09,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun09
+description: Group of unique names goun09
+uniquemember: uid=user174,ou=webui,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user175,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user176,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user177,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user178,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user179,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun10,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun10
+description: Group of unique names goun10
+uniquemember: uid=user180,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user181,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user182,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user183,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user184,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user185,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun11,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun11
+description: Group of unique names goun11
+uniquemember: uid=user186,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user187,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user188,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user189,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user190,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user191,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun12,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun12
+description: Group of unique names goun12
+uniquemember: uid=user192,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user193,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user194,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user195,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user196,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user197,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun13,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun13
+description: Group of unique names goun13
+uniquemember: uid=user198,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user199,ou=others,ou=dev,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user200,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user201,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user202,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user203,ou=accounting,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun14,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun14
+description: Group of unique names goun14
+uniquemember: uid=user204,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user205,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user206,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user207,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user208,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user209,ou=accounting,ou=people,dc=nuxeo,dc=com
+
+dn: cn=goun15,ou=gou,ou=static,ou=groups,dc=nuxeo,dc=com
+objectclass: groupOfUniqueNames
+cn: goun15
+description: Group of unique names goun15
+uniquemember: uid=user210,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user211,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user212,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user213,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user214,ou=accounting,ou=people,dc=nuxeo,dc=com
+uniquemember: uid=user215,ou=accounting,ou=people,dc=nuxeo,dc=com
+

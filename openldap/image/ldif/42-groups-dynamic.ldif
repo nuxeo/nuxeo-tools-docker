@@ -1,0 +1,35 @@
+dn: cn=persons,ou=dynamic,ou=groups,dc=nuxeo,dc=com
+objectClass: groupOfURLs
+cn: persons
+memberURL: ldap:///ou=people,dc=nuxeo,dc=com?uid?sub?(objectClass=inetOrgPerson)
+description: All the users in the tree
+
+dn: cn=salespeople,ou=dynamic,ou=groups,dc=nuxeo,dc=com
+objectClass: groupOfURLs
+cn: salespeople
+memberURL: ldap:///ou=sales,ou=people,dc=nuxeo,dc=com?uid?sub?(objectClass=inetOrgPerson)
+description: All the sales people
+
+dn: cn=devguys,ou=dynamic,ou=groups,dc=nuxeo,dc=com
+objectClass: groupOfURLs
+cn: devguys
+memberURL: ldap:///ou=dev,ou=people,dc=nuxeo,dc=com?uid?one?(objectClass=inetOrgPerson)
+description: Dev people not affected to a particular department
+
+dn: cn=users00,ou=dynamic,ou=groups,dc=nuxeo,dc=com
+objectClass: groupOfURLs
+cn: users00
+memberURL: ldap:///ou=people,dc=nuxeo,dc=com?uid?sub?(&(objectClass=inetOrgPerson)(uid=user00*))
+description: Users uids beginning with 00
+
+dn: cn=user7,ou=dynamic,ou=groups,dc=nuxeo,dc=com
+objectClass: groupOfURLs
+cn: user7
+memberURL: ldap:///ou=people,dc=nuxeo,dc=com?uid?sub?(&(objectClass=inetOrgPerson)(uid=user*7*))
+description: Users with a 7 in their uid
+
+dn: cn=nuxeoadmins,ou=dynamic,ou=groups,dc=nuxeo,dc=com
+objectClass: groupOfURLs
+cn: nuxeoadmins
+memberURL: ldap:///ou=people,dc=nuxeo,dc=com?uid?sub?(uid=Adm*)
+description: The Nuxeo administrators (only 1 actually)

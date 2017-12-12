@@ -26,6 +26,7 @@ all: clean build test
 
 clean:
 	-docker-compose --file tests/docker-compose.yml rm -f
+	@echo "Cleaning remaining docker datas..."
 	-docker rm $(docker ps --filter=status=exited --filter=status=created -q) 2>/dev/null
 	-docker image ls | grep "$(NAME)" | grep "latest" | sed 's/  */ /g' | cut -d ' ' -f 3 | xargs docker image rm -f 2>/dev/null
 

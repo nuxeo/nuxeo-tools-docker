@@ -17,11 +17,11 @@
  *     Frantz FISCHER <ffischer@nuxeo.com>
  */
  
-timeout(10) {
-    node('DYNAMIC') {
+node('DYNAMIC') {
+    timeout(10) {
         stage('checkout') {
             checkout scm
-            git_files_modified_for_repo = sh(returnStdout: true, script: 'git diff-tree --no-commit-id --name-only -r $(git rev-parse HEAD) | grep -c ^openldap || true').trim()
+            git_files_modified_for_repo = sh(returnStdout: true, script: 'git diff-tree --no-commit-id --name-only -r HEAD -- openldap | wc -l').trim()
             echo "Number of files changed for this commit -> ${git_files_modified_for_repo}"
         }
         if (git_files_modified_for_repo == "0") {
@@ -29,29 +29,21 @@ timeout(10) {
             currentBuild.result = 'SUCCESS'
             return
         }
-        stage('clean') {
-            dir("openldap") {
+        dir("openldap") {
+            stage('clean') {
                 sh "make clean"
             }
-        }
-        stage('build') {
-            dir("openldap") {
+            stage('build') {
                 sh 'sed -i "s/^SCM-REF=.*/SCM-REF=$(git rev-parse HEAD)/g" Makefile'
                 sh "make build"
             }
-        }
-        stage('test') {
-            dir("openldap") {
+            stage('test') {
                 sh "make test"
             }
-        }
-        stage('push') {
-            dir("openldap") {
+            stage('push') {
                 sh "make push"
             }
-        }
-        stage('tag') {
-            dir("openldap") {
+            stage('tag') {
                 sh "make tag"
             }
         }

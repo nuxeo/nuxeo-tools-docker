@@ -88,5 +88,11 @@ will end up being replaced by the right values inside a build job:
 
 
 An OpenLDAP image used for functional testing, dev and support at Nuxeo.
+
+### shibboleth-sp
+
+
+A Shibboleth service provider image for functional testing, dev and support at Nuxeo.
+
 ### oracle11g
 ### webdriver

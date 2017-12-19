@@ -26,7 +26,7 @@ CONTAINER_SHIB_PORT="${CONTAINER_SHIB_PORT:-"7443"}"
 oneTimeSetUp() {
   echo "CONTAINER_SHIB_PORT=${CONTAINER_SHIB_PORT}"
   echo "Waiting for Shibboleth server startup..."
-  until docker exec -it "${CONTAINER_SHIB_NAME}" [ -f /opt/shibboleth-idp/logs/idp-process.log ]; do
+  until docker exec -i "${CONTAINER_SHIB_NAME}" [ -f /opt/shibboleth-idp/logs/idp-process.log ]; do
     echo "Shibboleth IdP is not starting up - sleeping"
     sleep 2
   done

@@ -41,7 +41,7 @@ services:
     domainname: "ldap.shibboleth.com" # important: same as hostname
     hostname: "ldap.shibboleth.com"
   shibboleth-idp:
-    image: dockerpriv.nuxeo.com:443/nuxeo/shibboleth-idp-2:1.0.0-SNAPSHOT
+    image: dockerpriv.nuxeo.com:443/nuxeo/shibboleth-idp-2:latest
     container_name: shibboleth_idp_test
     tty: true
     ports:

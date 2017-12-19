@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Remove potential previous pid
+rm -f /usr/local/apache2/logs/httpd.pid
+
+# Retrieve idp metadata
+while true; do
+    curl -k -o idp-metadata.xml -LO 'https://'"$IDP_HOST"':'"$IDP_PORT"'/idp/shibboleth'
+    if [ $? -eq 0 ]; then
+        echo "[$(date "+%H:%M:%S")] Saving IDP Metadata file"
+        break
+    fi
+    echo "[$(date "+%H:%M:%S")] IDP Metadata file not yet retrieved - sleeping"
+    sleep 2
+done
+
+# Configure Apache
+echo "[$(date "+%H:%M:%S")] Configuring Apache..."
+sed -i "s|SP_HOST|$SP_HOST|g" /etc/httpd/conf.d/$SP_HOST.conf
+sed -i "s|SP_URL|$SP_URL|g" /etc/httpd/conf.d/$SP_HOST.conf
+sed -i "s/APACHE_CONF/$(if [ "$ANONYMOUS_LOGIN" = "true" ]; then echo "ShibRequestSetting requireSession 0\nShibRequestSetting applicationId default\nRequire shibboleth"; else echo "ShibRequireSession On\nrequire valid-user"; fi)/" /etc/httpd/conf.d/$SP_HOST.conf
+
+echo "[$(date "+%H:%M:%S")] Starting Shibboleth daemon..."
+/etc/shibboleth/shibd-redhat start
+exec httpd -DFOREGROUND

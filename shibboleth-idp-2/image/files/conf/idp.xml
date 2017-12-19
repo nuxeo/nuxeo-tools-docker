@@ -1,0 +1,6 @@
+<Context docBase="${IDP_HOME}/war/idp.war"
+    privileged="true"
+    antiResourceLocking="false"
+    antiJARLocking="false"
+    unpackWAR="false"
+    swallowOutput="true" />

@@ -1,0 +1,29 @@
+--- attribute-filter.xml.orig	2017-05-01 12:45:28.509520357 +0200
++++ attribute-filter.xml	2017-05-01 12:50:39.983959073 +0200
+@@ -21,6 +21,26 @@
+             <afp:PermitValueRule xsi:type="basic:ANY"/>
+         </afp:AttributeRule>
+ 
++        <afp:AttributeRule attributeID="uid">
++            <afp:PermitValueRule xsi:type="basic:ANY"/>
++        </afp:AttributeRule>
++
++        <afp:AttributeRule attributeID="email">
++            <afp:PermitValueRule xsi:type="basic:ANY"/>
++        </afp:AttributeRule>
++
++        <afp:AttributeRule attributeID="fullName">
++            <afp:PermitValueRule xsi:type="basic:ANY"/>
++        </afp:AttributeRule>
++
++        <afp:AttributeRule attributeID="lastName">
++            <afp:PermitValueRule xsi:type="basic:ANY"/>
++        </afp:AttributeRule>
++
++        <afp:AttributeRule attributeID="firstName">
++            <afp:PermitValueRule xsi:type="basic:ANY"/>
++        </afp:AttributeRule>
++
+     </afp:AttributeFilterPolicy>
+ 
+ 

@@ -1,0 +1,20 @@
+--- conf/handler.xml.orig	2017-04-26 11:18:29.967812960 +0200
++++ conf/handler.xml	2017-04-26 11:28:00.772646918 +0200
+@@ -112,10 +112,16 @@
+     </ph:ProfileHandler>
+     
+     <!-- Login Handlers -->
++<!--
+     <ph:LoginHandler xsi:type="ph:RemoteUser">
+         <ph:AuthenticationMethod>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified</ph:AuthenticationMethod>
+     </ph:LoginHandler>
+-    
++-->
++
++    <ph:LoginHandler xsi:type="ph:UsernamePassword" jaasConfigurationLocation="file://SHIBBOLETH_IDP_HOME/conf/login.config">
++        <ph:AuthenticationMethod>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</ph:AuthenticationMethod>
++    </ph:LoginHandler>
++
+     <!-- Login handler that delegates the act of authentication to an external system. -->
+     <!-- This login handler and the RemoteUser login handler will be merged in the next major release. -->
+     <!--

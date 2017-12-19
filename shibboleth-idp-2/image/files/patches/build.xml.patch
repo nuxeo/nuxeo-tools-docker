@@ -1,0 +1,59 @@
+--- src/installer/resources/build.xml.orig	2017-04-29 19:56:27.677901728 +0200
++++ src/installer/resources/build.xml	2017-04-29 19:59:33.939272227 +0200
+@@ -25,8 +25,7 @@
+     	<echo message="Be sure you have read the installation/upgrade instructions on the Shibboleth website before proceeding."/>
+     	<echo message="!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"/>
+         
+-        <input message="Where should the Shibboleth Identity Provider software be installed?" addproperty="idp.home.input" defaultvalue="${idp.home}"/>
+-        <var name="idp.home" value="${idp.home.input}"/>
++        <var name="idp.home" value="SHIBBOLETH_IDP_HOME"/>
+ 
+         <pathToAbsolutePath path="${idp.home}" addproperty="idp.home.path"/>
+         <pathToUrl path="${idp.home}" addproperty="idp.home.url"/>
+@@ -44,10 +43,9 @@
+         <if>
+             <equals arg1="${install.config}" arg2="yes"/>
+             <then>
+-                <input message="What is the fully qualified hostname of the Shibboleth Identity Provider server?" addproperty="idp.hostname.input" defaultvalue="${idp.hostname}"/>
+-                <var name="idp.hostname" value="${idp.hostname.input}"/>
++                <var name="idp.hostname" value="SHIBBOLETH_IDP_HOSTNAME"/>
+ 
+-                <input message="A keystore is about to be generated for you. Please enter a password that will be used to protect it." addproperty="idp.keystore.pass"/>
++		<var name="idp.keystore.pass" value="SHIBBOLETH_IDP_KEYSTORE_PASSWORD"/>
+ 
+                 <propertyfile file="${resources.dir}/install.properties">
+                     <entry key="idp.home" value="${idp.home.input}"/>
+@@ -63,7 +61,7 @@
+                 <mkdir dir="${idp.home.path}/metadata"/>
+                 <mkdir dir="${idp.home.path}/war"/>
+ 
+-                <var name="idp.entity.id" value="https://${idp.hostname}/idp/shibboleth"/>
++                <var name="idp.entity.id" value="SHIBBOLETH_IDP_PROTOCOL://${idp.hostname}:SHIBBOLETH_IDP_PORT/idp/shibboleth"/>
+                 <var name="idp.web.xml.name" value="${webapp.dir}/WEB-INF/web.xml"/>
+ 
+                 <regexSplit input="${idp.hostname}" regex="^.*\.(.*\..*$)" addproperty="idp.scope"/>
+@@ -137,7 +135,7 @@
+                     Even if we're not overwritting the config we should still add new files, for example, files added
+                     in a new release.
+                 -->
+-                <var name="idp.entity.id" value="https://${idp.hostname}/idp/shibboleth"/>
++                <var name="idp.entity.id" value="SHIBBOLETH_IDP_PROTOCOL://${idp.hostname}:SHIBBOLETH_IDP_PORT/idp/shibboleth"/>
+                 <regexSplit input="${idp.hostname}" regex="^.*\.(.*\..*$)" addproperty="idp.scope"/>
+                 <stringFromFile input="${idp.home.path}/credentials/idp.crt" addProperty="idp.cert"/>
+                     
+@@ -214,7 +212,7 @@
+             
+                 <input message="What is the fully qualified hostname of the Shibboleth Identity Provider server?" addproperty="idp.hostname.input" defaultvalue="${idp.hostname}"/> 
+                 <var name="idp.hostname" value="${idp.hostname.input}"/> 
+-                <var name="idp.entity.id" value="https://${idp.hostname}/idp/shibboleth"/> 
++                <var name="idp.entity.id" value="SHIBBOLETH_IDP_PROTOCOL://${idp.hostname}:SHIBBOLETH_IDP_PORT/idp/shibboleth"/> 
+ 
+                 <input message="A keystore is about to be generated for you. Please enter a password that will be used to protect it." addproperty="idp.keystore.pass"/> 
+ 
+@@ -235,4 +233,4 @@
+             </then>
+         </if>
+     </target>
+-</project>
+\ No newline at end of file
++</project>

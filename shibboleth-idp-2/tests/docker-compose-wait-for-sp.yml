@@ -36,18 +36,35 @@ services:
     tty: true
     # stdin_open: true
     ports:
-      - "389:389"
-      - "636:636"
+      - "389"
+      - "636"
     domainname: "ldap.shibboleth.com" # important: same as hostname
     hostname: "ldap.shibboleth.com"
+    networks:
+      main:
+        aliases:
+          - "ldap.shibboleth.com"
+  test-client:
+    image: idp-testing-client:latest
+    container_name: shibboleth_idp_client_test
+    tty: true
+    hostname: "testclient.shibboleth.com"
+    networks:
+      main:
+        aliases:
+          - "testclient.shibboleth.com"
   shibboleth-idp:
     image: dockerpriv.nuxeo.com:443/nuxeo/shibboleth-idp-2:latest
     container_name: shibboleth_idp_test
     environment:
       WAIT_FOR_SP_AND_REG: "true"
-    tty: true
     ports:
-      - "7443:7443"
+      - "7443"
     hostname: "idp.shibboleth.com"
-    links:
-      - openldap:ldap.shibboleth.com
+    networks:
+      main:
+        aliases:
+          - "idp.shibboleth.com"
+
+networks:
+  main:

@@ -21,6 +21,8 @@
 readonly __ORIGIN_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 readonly CONTAINER_SHIB_NAME="shibboleth_idp_test"
+readonly IDP_HOST_NAME="idp.shibboleth.com"
+readonly CONTAINER_CLIENT_NAME="shibboleth_idp_client_test"
 CONTAINER_SHIB_PORT="${CONTAINER_SHIB_PORT:-"7443"}"
 
 oneTimeSetUp() {
@@ -38,12 +40,12 @@ oneTimeSetUp() {
 testProfileStatus() {
   local cmd_out
 
-  cmd_out=$(docker exec -i "${CONTAINER_SHIB_NAME}" wget --no-check-certificate -qO- https://127.0.0.1:${CONTAINER_SHIB_PORT}/idp/profile/Status)
+  cmd_out=$(docker exec -i "${CONTAINER_CLIENT_NAME}" wget --no-check-certificate -qO- https://${IDP_HOST_NAME}:${CONTAINER_SHIB_PORT}/idp/profile/Status)
   assertEquals "incorrect IdP status" "ok" "${cmd_out}"
 }
 
 testLoginPageReachable() {
-  docker exec -i "${CONTAINER_SHIB_NAME}" wget --no-check-certificate -qO- https://127.0.0.1:${CONTAINER_SHIB_PORT}/idp/Authn/UserPassword | grep -q 'Log in to Unspecified Service Provider'
+  docker exec -i "${CONTAINER_CLIENT_NAME}" wget --no-check-certificate -qO- https://${IDP_HOST_NAME}:${CONTAINER_SHIB_PORT}/idp/Authn/UserPassword | grep -q 'Log in to Unspecified Service Provider'
   assertTrue "incorrect result when trying to reach the login page" $?
 }
 
@@ -75,7 +77,7 @@ testFailedLoginUser046() {
 testIdPMetataPort() {
   local cmd_out
 
-  cmd_out=$(docker exec -i "${CONTAINER_SHIB_NAME}" wget --no-check-certificate -qO- https://127.0.0.1:${CONTAINER_SHIB_PORT}/idp/shibboleth | grep -o ":${CONTAINER_SHIB_PORT}" | grep -c ":${CONTAINER_SHIB_PORT}")
+  cmd_out=$(docker exec -i "${CONTAINER_CLIENT_NAME}" wget --no-check-certificate -qO- https://${IDP_HOST_NAME}:${CONTAINER_SHIB_PORT}/idp/shibboleth | grep -o ":${CONTAINER_SHIB_PORT}" | grep -c ":${CONTAINER_SHIB_PORT}")
   assertEquals "incorrect IdP status" "12" "${cmd_out}"
 }
 
@@ -88,7 +90,7 @@ loginUser() {
   local user=$1
   local pass=$2
 
-  docker exec -i "${CONTAINER_SHIB_NAME}" wget --no-check-certificate -qO- "https://127.0.0.1:${CONTAINER_SHIB_PORT}/idp/Authn/UserPassword?j_username=${user}&j_password=${pass}&_eventId=submit&submit=LOGIN"
+  docker exec -i "${CONTAINER_CLIENT_NAME}" wget --no-check-certificate -qO- "https://${IDP_HOST_NAME}:${CONTAINER_SHIB_PORT}/idp/Authn/UserPassword?j_username=${user}&j_password=${pass}&_eventId=submit&submit=LOGIN"
 }
 
 # shellcheck disable=1090

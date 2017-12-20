@@ -59,6 +59,8 @@ stop:
 	CONTAINER_SHIB_PORT=$(IDP_DEFAULT_PORT)	docker-compose --file ./$(COMPOSE_FILE) down
 
 test:
+	@echo "Building client image..."
+	docker image build --tag "idp-testing-client:latest" --no-cache --rm ./tests
 	@echo "Testing with ./tests/docker-compose.yml"
 	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose.yml
 	docker-compose --file ./tests/docker-compose.yml up -d

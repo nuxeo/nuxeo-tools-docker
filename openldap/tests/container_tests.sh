@@ -249,5 +249,25 @@ testAccessLogDbConfigFileIsPresent() {
   assertFalse "DB_CONFIG is missing for accesslog database" "docker logs ${CONTAINER_NAME} | grep -q 'no DB_CONFIG file found in directory /var/lib/ldapaccesslog'"
 }
 
+testUniqueMemberIsEqualityIndexed() {
+  local cmd_out
+
+  ldapSearch "(&(uniqueMember=uid=user126,ou=core,ou=dev,ou=people,dc=nuxeo,dc=com)(&(&(|(objectClass=groupOfUniqueNames)(objectClass=groupOfURLs)))(cn=*)))" > /dev/null
+  assertTrue "server does not answer" $?
+
+  cmd_out=$(docker logs "${CONTAINER_NAME}" | grep -q 'bdb_equality_candidates: (uniqueMember) not indexed')
+  assertFalse "uniqueMember is not indexed for equality" $?
+}
+
+testMemberIsEqualityIndexed() {
+  local cmd_out
+
+  ldapSearch "(&(member=uid=user000,ou=sales,ou=people,dc=nuxeo,dc=com)(&(&(|(objectClass=groupOfNames)(objectClass=groupOfURLs)))(cn=*)))" > /dev/null
+  assertTrue "server does not answer" $?
+
+  cmd_out=$(docker logs "${CONTAINER_NAME}" | grep -q 'bdb_equality_candidates: (member) not indexed')
+  assertFalse "member is not indexed for equality" $?
+}
+
 # shellcheck disable=1090
 . "${SHUNIT2_HOME}/shunit2"

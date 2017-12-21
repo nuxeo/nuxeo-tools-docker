@@ -44,5 +44,5 @@ ADD ldif/41-groups-static-unique-names.ldif /container/service/slapd/assets/conf
 ADD ldif/42-groups-dynamic.ldif /container/service/slapd/assets/config/bootstrap/ldif/custom
 ADD ldif/99-config-accesslog.ldif /container/service/slapd/assets/config/bootstrap/ldif/custom
 
-EXPOSE 389:389
-EXPOSE 636:636
+EXPOSE 389
+EXPOSE 636

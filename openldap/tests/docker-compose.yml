@@ -35,7 +35,7 @@ services:
     tty: true
     # stdin_open: true
     ports:
-      - "389:389"
-      - "636:636"
+      - "389"
+      - "636"
     domainname: "ldaptests.myhost" # important: same as hostname
     hostname: "ldaptests.myhost"

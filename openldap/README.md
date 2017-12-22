@@ -1,14 +1,41 @@
+# Table of contents
+
+* [Table of contents](#table-of-contents)
+   * [About / Synopsis](#about--synopsis)
+   * [Content Listing](#content-listing)
+   * [Usage](#usage)
+      * [Quickstart](#quickstart)
+      * [Targets](#targets)
+        * [clean](#clean)
+        * [build](#build)
+        * [start](#start)
+        * [stop](#stop)
+        * [test](#test)
+        * [push](#push)
+        * [tag](#tag)
+   * [Code](#code)
+      * [QA](#qa)
+      * [Requirements](#requirements)
+   * [Resources (Documentation and other links)](#resources-documentation-and-other-links)
+
 # About / Synopsis
 
 An OpenLDAP docker image provisioned with data and used for functional testing, dev and support at Nuxeo.<br><br>
 
 It is based on [osixia/openldap:1.1.10](https://github.com/osixia/docker-openldap/tree/v1.1.10) image and features [OpenLDAP](https://www.openldap.org/) 2.4.44.
 
-# Content Listing TODO
+# Content Listing
 
-# Table of contents TODO
+See [image/README.md](image/README.md)
 
-Use for instance https://github.com/ekalinin/github-markdown-toc
+```bash
+├── image                           # data needed to build the image
+│   └── Dockerfile
+├── Jenkinsfile
+├── Makefile
+├── scripts                         # LDAP populating
+└── tests                           # Tests tooling
+```
 
 # Usage
 
@@ -54,22 +81,20 @@ Add a Git tag for the current image version.
 
 [![Build Status](https://qa.nuxeo.org/jenkins/buildStatus/icon?job=/Deploy/IT-nuxeo-tools-docker-openldap)](https://qa.nuxeo.org/jenkins/job/Deploy/job/IT-nuxeo-tools-docker-openldap/)
 
-## Content
+## Requirements
 
-See [image/README.md](image/README.md)
+GNU make  
+GNU sed  
+docker >= 17  
+docker-compose >= 1.17
+shunit2
+jq
 
-```bash
-├── image                           # data needed to build the image
-│   └── Dockerfile
-├── Jenkinsfile
-├── Makefile
-├── scripts                         # LDAP populating
-└── tests                           # Tests tooling
-```
+# Resources (Documentation and other links)
 
-## Requirements TODO
-
-shunit2, jq
-
-# Resources (Documentation and other links) TODO
-
+https://www.openldap.org/  
+https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format  
+https://tools.ietf.org/html/rfc2849  
+https://tools.ietf.org/html/rfc4511
+https://github.com/osixia/docker-openldap
+https://alpinelinux.org/

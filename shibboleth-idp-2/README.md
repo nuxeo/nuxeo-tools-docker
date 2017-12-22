@@ -22,7 +22,7 @@
 
 A Shibboleth IdP docker image using LDAP as user repository for functional testing, dev and support at Nuxeo.<br><br>
 
-It is based on [openjdk:8u151-jdk-slim](https://github.com/docker-library/openjdk/blob/a893fe3cd82757e7bccc0948c88bfee09bd916c3/8-jdk/slim/Dockerfile) image and features [Shibboleth](https://www.openldap.org/) 2.4.5 and [Tomcat](https://tomcat.apache.org/download-80.cgi) 8.0.48.
+It is based on [openjdk:8u151-jdk-slim](https://github.com/docker-library/openjdk/blob/a893fe3cd82757e7bccc0948c88bfee09bd916c3/8-jdk/slim/Dockerfile) image and features [Shibboleth](https://www.shibboleth.net) 2.4.5 and [Tomcat](https://tomcat.apache.org/download-80.cgi) 8.0.48.
 
 # Content Listing
 

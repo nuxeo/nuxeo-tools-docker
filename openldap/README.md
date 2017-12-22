@@ -1,6 +1,5 @@
 # Table of contents
 
-* [Table of contents](#table-of-contents)
    * [About / Synopsis](#about--synopsis)
    * [Content Listing](#content-listing)
    * [Usage](#usage)

@@ -86,8 +86,8 @@ Add a Git tag for the current image version.
 GNU make  
 GNU sed  
 docker >= 17  
-docker-compose >= 1.17
-shunit2
+docker-compose >= 1.17  
+shunit2  
 jq
 
 # Resources (Documentation and other links)

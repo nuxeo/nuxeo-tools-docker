@@ -36,8 +36,8 @@ services:
     tty: true
     # stdin_open: true
     ports:
-      - "389:389"
-      - "636:636"
+      - "389"
+      - "636"
     domainname: "ldap.shibboleth.com" # important: same as hostname
     hostname: "ldap.shibboleth.com"
     networks:
@@ -45,11 +45,11 @@ services:
         aliases:
           - "ldap.shibboleth.com"
   shibboleth-idp:
-    image: dockerpriv.nuxeo.com/nuxeo/shibboleth-idp-2:1.0.0-SNAPSHOT
+    image: dockerpriv.nuxeo.com/nuxeo/shibboleth-idp-2:latest
     container_name: shibboleth_idp_test
     tty: true
     ports:
-      - "7443:7443"
+      - "7443"
     hostname: idp.shibboleth.com
     networks:
       main:

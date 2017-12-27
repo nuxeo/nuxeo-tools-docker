@@ -58,7 +58,7 @@ push:
 	@echo "Refreshing local tags..."
 	git tag -l | xargs git tag -d
 	git fetch --tags
-	@if git tag -l | grep -q $(TAG-NAME)-$(VERSION); then echo "Tag already exists. No need to push new image build."; exit 1; fi
+	@if git tag -l | grep -q $(TAG_NAME)-$(VERSION); then echo "Tag already exists. No need to push new image build."; exit 1; fi
 	@echo "Pushing tag $(TAG_VERSION)..."
 	docker push $(NAME):$(TAG_VERSION)
 
@@ -66,8 +66,8 @@ tag:
 	@echo "Refreshing local tags..."
 	git tag -l | xargs git tag -d
 	git fetch --tags
-	git tag $(TAG-NAME)-$(VERSION)
-	git push origin $(TAG-NAME)-$(VERSION)
+	git tag $(TAG_NAME)-$(VERSION)
+	git push origin $(TAG_NAME)-$(VERSION)
 
 pushdev: BUILD_VERSION=$(VERSION)-SNAPSHOT
 pushdev: TAG_VERSION=$(BUILD_VERSION)

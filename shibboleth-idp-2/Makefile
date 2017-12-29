@@ -64,12 +64,12 @@ test:
 	@echo "Testing with ./tests/docker-compose.yml"
 	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose.yml
 	docker-compose --file ./tests/docker-compose.yml up -d
-	CONTAINER_SHIB_PORT=7443 ./tests/container_tests.sh
+	-CONTAINER_SHIB_PORT=7443 ./tests/container_tests.sh
 	docker-compose --file ./tests/docker-compose.yml down
 	@echo "Testing with ./tests/docker-compose-alternate-port.yml"
 	sed -i "$(shell grep -n image: tests/docker-compose-alternate-port.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose-alternate-port.yml
 	docker-compose --file ./tests/docker-compose-alternate-port.yml up -d
-	CONTAINER_SHIB_PORT=11298 ./tests/container_tests.sh
+	-CONTAINER_SHIB_PORT=11298 ./tests/container_tests.sh
 	docker-compose --file ./tests/docker-compose-alternate-port.yml down
 
 push:

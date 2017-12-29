@@ -51,7 +51,7 @@ test:
 	# replacing the last image line in the docker-compose.yml file
 	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME),g" tests/docker-compose.yml
 	docker-compose --file ./tests/docker-compose.yml up -d
-	./tests/container_tests.sh
+	-./tests/container_tests.sh
 	docker-compose --file ./tests/docker-compose.yml down
 
 push:

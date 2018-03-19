@@ -2,7 +2,7 @@
 
 cd $(dirname $0)
 
-git clone https://github.com/nuxeo/ffmpeg-nuxeo.git
+git clone -b feature-NCO-502-ffmpeg-ver-upd https://github.com/nuxeo/ffmpeg-nuxeo.git
 cd ffmpeg-nuxeo
 
 export BUILD_YASM=true
@@ -11,4 +11,3 @@ mkdir -p /packages
 chmod 0777 /packages
 find ffmpeg* -type f -name '*.deb' -exec cp {} /packages/ \;
 chmod 0666 /packages/*.deb
-

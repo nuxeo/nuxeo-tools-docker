@@ -12,11 +12,14 @@ until curl -m 5 -o /dev/null -s http://localhost:8080/; do
     time2=$(date +"%s")
     delta=$((time2 - time1))
     if [ $delta -gt $MAXWAIT ]; then
-        echo "Max wait time exceeded - aborting."
+        curl -m 5 http://localhost:8080/
+        echo $?
+        echo "Max wait time exceeded (${MAXWAIT}s) - aborting."
         docker-compose kill
         docker-compose rm -f
         exit 1
     else
+        echo -n .
         sleep 5
     fi
 done

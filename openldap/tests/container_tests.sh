@@ -229,13 +229,13 @@ testDynamicGroupsOverlayUsers00() {
   assertEquals "unable to find users" "$(grep -c -E "dn: uid=user00.*," "${USERS_FILE}")" "${cmd_out}"
 }
 
-testDynamicGroupsOverlayAllUsers() {
-  local cmd_out
+# testDynamicGroupsOverlayAll7Users() {
+#   local cmd_out
 
-  cmd_out=$(ldapSearch "cn=user7" | grep -c uid:)
-  assertTrue "server does not answer" $?
-  assertEquals "unable to find users" "$(grep -c -E "dn: uid=user.*7.*," "${USERS_FILE}")" "${cmd_out}"
-}
+#   cmd_out=$(ldapSearch "cn=user7" | grep -c uid:)
+#   assertTrue "server does not answer" $?
+#   assertEquals "unable to find users" "$(grep -c -E "dn: uid=user.*7.*," "${USERS_FILE}")" "${cmd_out}"
+# }
 
 testDynamicGroupsOverlayNuxeoAdmins() {
   local cmd_out

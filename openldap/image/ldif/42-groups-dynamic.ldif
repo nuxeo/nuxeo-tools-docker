@@ -22,11 +22,11 @@ cn: users00
 memberURL: ldap:///ou=people,dc=nuxeo,dc=com?uid?sub?(&(objectClass=inetOrgPerson)(uid=user00*))
 description: Users uids beginning with 00
 
-dn: cn=user7,ou=dynamic,ou=groups,dc=nuxeo,dc=com
-objectClass: groupOfURLs
-cn: user7
-memberURL: ldap:///ou=people,dc=nuxeo,dc=com?uid?sub?(&(objectClass=inetOrgPerson)(uid=user*7*))
-description: Users with a 7 in their uid
+#dn: cn=user7,ou=dynamic,ou=groups,dc=nuxeo,dc=com
+#objectClass: groupOfURLs
+#cn: user7
+#memberURL: ldap:///ou=people,dc=nuxeo,dc=com?uid?sub?(&(objectClass=inetOrgPerson)(uid=user*7*))
+#description: Users with a 7 in their uid
 
 dn: cn=nuxeoadmins,ou=dynamic,ou=groups,dc=nuxeo,dc=com
 objectClass: groupOfURLs

@@ -19,7 +19,7 @@
 SHELL=/bin/bash
 TAG-NAME=nuxeo/openldap
 NAME=dockerpriv.nuxeo.com:443/$(TAG-NAME)
-VERSION=1.0.1
+VERSION=1.0.2
 SCM-REF=PIPELINE-SCM-VALUE
 
 all: clean build test

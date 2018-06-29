@@ -102,4 +102,13 @@ An OpenLDAP image used for functional testing, dev and support at Nuxeo.
 A Shibboleth service provider image for functional testing, dev and support at Nuxeo.
 
 ### oracle11g
+
+### pgsql9.5logs
+
+https://hub.docker.com/r/library/postgres/ 9.5 customized with logging collector and sample Nuxeo configuration
+
+See [pgsql9.5logs/README.md](pgsql9.5logs/README.md)
+
 ### webdriver
+
+

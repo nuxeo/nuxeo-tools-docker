@@ -1,7 +1,7 @@
 # About / Synopsis
 
-* What is it, what does it do / Abstract
-* Project status: working/prototype
+* Miscelaneous Docker files used at Nuxeo
+* Project status: working
 
 * Nuxeo Support: internal usage, no support.
 
@@ -79,13 +79,20 @@ will end up being replaced by the right values inside a build job:
 ### ccextractor
 ### ffmpeg
 ### jenkins-slave
+
+Deprecated
+
 ### libsass
 ### nuxeo-cluster
 ### nuxeo
+
+Deprecated
+
 ### nuxeobase
+
+Deprecated
+
 ### openldap
-
-
 
 An OpenLDAP image used for functional testing, dev and support at Nuxeo.
 

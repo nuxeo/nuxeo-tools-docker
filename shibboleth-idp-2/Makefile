@@ -19,7 +19,7 @@
 SHELL=/bin/bash
 TAG_NAME=nuxeo/shibboleth-idp-2
 NAME=dockerpriv.nuxeo.com:443/$(TAG_NAME)
-VERSION=1.0.0
+VERSION=1.0.1
 BUILD_VERSION=$(VERSION)
 TAG_VERSION=latest
 SCM_REF=PIPELINE-SCM-VALUE
@@ -71,6 +71,12 @@ test:
 	docker-compose --file ./tests/docker-compose-alternate-port.yml up -d
 	-CONTAINER_SHIB_PORT=11298 ./tests/container_tests.sh
 	docker-compose --file ./tests/docker-compose-alternate-port.yml down
+	@echo "Testing SP type values"
+	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose.yml
+	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose-sp-testing-shibboleth.yml
+	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose-sp-testing-nuxeo.yml
+	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose-sp-testing-unknown.yml
+	./tests/container_sp_tests.sh
 
 push:
 	@echo "Refreshing local tags..."

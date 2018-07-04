@@ -1,0 +1,70 @@
+##
+## (C) Copyright 2017 Nuxeo (http://nuxeo.com/) and others.
+##
+## Licensed under the Apache License, Version 2.0 (the "License");
+## you may not use this file except in compliance with the License.
+## You may obtain a copy of the License at
+##
+##     http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing, software
+## distributed under the License is distributed on an "AS IS" BASIS,
+## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+## See the License for the specific language governing permissions and
+## limitations under the License.
+##
+## Contributors:
+##     Frantz FISCHER <ffischer@nuxeo.com>
+
+version: '2'
+services:
+  openldap:
+    image: dockerpriv.nuxeo.com/nuxeo/openldap
+    container_name: openldap_test
+    environment:
+      LDAP_TLS: "false"
+      # LDAP_TLS_CRT_FILENAME: "ldap.crt"
+      # LDAP_TLS_KEY_FILENAME: "ldap.key"
+      # LDAP_TLS_CA_CRT_FILENAME: "ca.crt"
+      # LDAP_TLS_ENFORCE: "false"
+      # LDAP_TLS_CIPHER_SUITE: "SECURE256:-VERS-SSL3.0"
+      # LDAP_TLS_PROTOCOL_MIN: "3.1"
+      # LDAP_TLS_VERIFY_CLIENT: "demand"
+      LDAP_REPLICATION: "false"
+      # LDAP_SSL_HELPER_PREFIX: "ldap"
+      LDAP_ADMIN_PASSWORD: password
+    tty: true
+    # stdin_open: true
+    ports:
+      - "389"
+      - "636"
+    domainname: "ldap.shibboleth.com" # important: same as hostname
+    hostname: "ldap.shibboleth.com"
+    networks:
+      main:
+        aliases:
+          - "ldap.shibboleth.com"
+  test-client:
+    image: idp-testing-client:latest
+    container_name: shibboleth_idp_client_test
+    tty: true
+    hostname: "testclient.shibboleth.com"
+    networks:
+      main:
+        aliases:
+          - "testclient.shibboleth.com"
+  shibboleth-idp:
+    image: dockerpriv.nuxeo.com:443/nuxeo/shibboleth-idp-2:latest
+    container_name: shibboleth_idp_test
+    environment:
+      SP_TYPE: "Nuxeo"
+    ports:
+      - "7443"
+    hostname: "idp.shibboleth.com"
+    networks:
+      main:
+        aliases:
+          - "idp.shibboleth.com"
+
+networks:
+  main:

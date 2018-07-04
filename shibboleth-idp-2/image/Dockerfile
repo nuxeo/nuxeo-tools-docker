@@ -19,7 +19,7 @@
 FROM openjdk:8u151-jdk-slim
 
 LABEL maintainer="Nuxeo Packagers <packagers+docker-shibboleth-idp-2@nuxeo.com>" \
-      version="1.0.0" \
+      version="1.0.1" \
       scm-ref="PIPELINE-SCM-VALUE" \
       scm-url="https://github.com/nuxeo/nuxeo-tools-docker" \
       description="A Shibboleth Identity Provider version 2 with users coming from an LDAP repository"

@@ -12,7 +12,19 @@ startAndWaitForIdP() {
 
 TMP_PATCHES_FOLDER=/tmp/patches
 TMP_CONF_FOLDER=/tmp/conf
-SP_URL="$(if [ "${SP_SSL_ENABLED}" = "true" ]; then echo "https"; else echo "http"; fi)://${SP_HOST}/Shibboleth.sso/Metadata"
+SP_TYPE=${SP_TYPE:-Shibboleth}
+SP_URL_PROTOCOL="$(if [ "${SP_SSL_ENABLED}" = "true" ]; then echo "https"; else echo "http"; fi)"
+if [ "${SP_TYPE}" = "Shibboleth" ]; then
+  SP_METADATA_PATH="Shibboleth.sso/Metadata"
+elif [ "${SP_TYPE}" = "Nuxeo" ]; then
+  SP_METADATA_PATH="nuxeo/saml/metadata"
+else
+  echo "ERROR: unknown SP type [${SP_TYPE}]"
+  exit 1
+fi
+SP_URL="${SP_URL_PROTOCOL}://${SP_HOST}/${SP_METADATA_PATH}"
+
+echo "SP metadata URL is ${SP_URL}"
 
 cd "${IDP_INSTALL_FOLDER}"
 patch -p0 < "${TMP_PATCHES_FOLDER}"/build.xml.patch

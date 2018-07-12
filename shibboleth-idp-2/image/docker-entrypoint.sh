@@ -12,7 +12,7 @@ startAndWaitForIdP() {
 
 TMP_PATCHES_FOLDER=/tmp/patches
 TMP_CONF_FOLDER=/tmp/conf
-SP_TYPE=${SP_TYPE:-Shibboleth}
+
 SP_URL_PROTOCOL="$(if [ "${SP_SSL_ENABLED}" = "true" ]; then echo "https"; else echo "http"; fi)"
 if [ "${SP_TYPE}" = "Shibboleth" ]; then
   SP_METADATA_PATH="Shibboleth.sso/Metadata"
@@ -70,6 +70,16 @@ sed -i "s/LDAP_HOST/${LDAP_HOST}/g;s/SHIB_LDAP_USERS_BASE_DN/${SHIB_LDAP_USERS_B
 # Adding uid and mail to the responses else they are not available
 cd "${IDP_HOME}"/conf
 patch < "${TMP_PATCHES_FOLDER}"/attribute-filter.xml.patch
+
+if [ "${ENCRYPT_SAML_ASSERTIONS}" = "true" ]; then
+  echo "SAML assertions encryption is enabled."
+elif [ "${ENCRYPT_SAML_ASSERTIONS}" = "false" ]; then
+  echo "SAML assertions encryption is disabled."
+  sed -i "s/encryptAssertions=\"conditional\"/encryptAssertions=\"never\"/" "${IDP_HOME}"/conf/relying-party.xml
+else
+  echo "ERROR: unknown ENCRYPT_SAML_ASSERTIONS value [${ENCRYPT_SAML_ASSERTIONS}]"
+  exit 1
+fi
 
 # Removing unneeded folders
 rm -rf "${IDP_INSTALL_FOLDER}"

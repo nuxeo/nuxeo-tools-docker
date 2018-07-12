@@ -19,7 +19,7 @@
 SHELL=/bin/bash
 TAG_NAME=nuxeo/shibboleth-idp-2
 NAME=dockerpriv.nuxeo.com:443/$(TAG_NAME)
-VERSION=1.0.2
+VERSION=1.0.3
 BUILD_VERSION=$(VERSION)
 TAG_VERSION=latest
 SCM_REF=PIPELINE-SCM-VALUE

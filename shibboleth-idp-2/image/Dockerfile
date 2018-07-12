@@ -19,7 +19,7 @@
 FROM openjdk:8u151-jdk-slim
 
 LABEL maintainer="Nuxeo Packagers <packagers+docker-shibboleth-idp-2@nuxeo.com>" \
-      version="1.0.1" \
+      version="1.0.2" \
       scm-ref="PIPELINE-SCM-VALUE" \
       scm-url="https://github.com/nuxeo/nuxeo-tools-docker" \
       description="A Shibboleth Identity Provider version 2 with users coming from an LDAP repository"
@@ -45,7 +45,9 @@ ENV IDP_HOST="idp.shibboleth.com" \
     IDP_SHA1="14cfb67aac68c521dd2d30e41febba13d4a97b73" \
     SP_SSL_ENABLED="true" \
     SP_HOST="sp.shibboleth.com" \
-    WAIT_FOR_SP_AND_REG="false"
+    WAIT_FOR_SP_AND_REG="false" \
+    SP_TYPE="Shibboleth" \
+    ENCRYPT_SAML_ASSERTIONS="true"
 
 ENV TOMCAT_ARCHIVE="apache-tomcat-${TOMCAT_VERSION}.tar.gz" \
     IDP_ARCHIVE="shibboleth-identityprovider-${IDP_VERSION}-bin.tar.gz" \

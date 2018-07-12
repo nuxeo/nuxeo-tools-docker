@@ -12,5 +12,8 @@ A docker file that extends the Debian JDK slim one, retrieves archives, installs
 
 ### Entrypoint
 The entrypoint will install and configure the IdP while starting the docker container.  
-It can optionnally wait for a Service Provider to retrieve the IdP metadata and then proceed automatically through SP registration (see **WAIT_FOR_SP_AND_REG** parameter).  
-Both Shibboleth SP and Nuxeo SP are supported through the **SP_TYPE** parameter (default value is **Shibboleth**).
+
+### Variables
+* [WAIT_FOR_SP_AND_REG] It can optionnally wait for a Service Provider to retrieve the IdP metadata and then proceed automatically through SP registration (default value is **false**). 
+* [SP_TYPE] Both Shibboleth SP and Nuxeo SP are supported through the **SP_TYPE** parameter (default value is **Shibboleth**).
+* [ENCRYPT_SAML_ASSERTIONS] Enabling SAML assertions is done with **true** or disabled with **false** (default value is **true**).

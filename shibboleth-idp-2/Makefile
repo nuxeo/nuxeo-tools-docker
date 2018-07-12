@@ -1,5 +1,5 @@
 ##
-## (C) Copyright 2017 Nuxeo (http://nuxeo.com/) and others.
+## (C) Copyright 2017-2018 Nuxeo (http://nuxeo.com/) and others.
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
 ## you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 SHELL=/bin/bash
 TAG_NAME=nuxeo/shibboleth-idp-2
 NAME=dockerpriv.nuxeo.com:443/$(TAG_NAME)
-VERSION=1.0.1
+VERSION=1.0.2
 BUILD_VERSION=$(VERSION)
 TAG_VERSION=latest
 SCM_REF=PIPELINE-SCM-VALUE
@@ -77,6 +77,10 @@ test:
 	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose-sp-testing-nuxeo.yml
 	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose-sp-testing-unknown.yml
 	./tests/container_sp_tests.sh
+	@echo "Testing ENCRYPT_SAML_ASSERTIONS type values"
+	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose.yml
+	sed -i "$(shell grep -n image: tests/docker-compose.yml | tail -1 | cut -d ':' -f 1)s,^\\s*image:.*,    image: $(NAME):$(TAG_VERSION),g" tests/docker-compose-assert-enc.yml
+	./tests/container_assert_enc_tests.sh
 
 push:
 	@echo "Refreshing local tags..."

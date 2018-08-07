@@ -19,35 +19,43 @@
 
 node('DYNAMIC') {
     timeout(10) {
-        stage('checkout') {
-            checkout scm
-            git_files_modified_for_repo = sh(returnStdout: true, script: 'git diff-tree --no-commit-id --name-only -r HEAD -- shibboleth-sp | wc -l').trim()
-            echo "Number of files changed for this commit -> ${git_files_modified_for_repo}"
-        }
-        if (git_files_modified_for_repo == "0") {
-            echo "No commit related to shibboleth-sp, no need to build a new image."
-            currentBuild.result = 'SUCCESS'
-            return
-        }
-        dir("shibboleth-sp") {
-            stage('clean') {
-                sh "make clean"
+        try {
+            stage('checkout') {
+                checkout scm
+                git_files_modified_for_repo = sh(returnStdout: true, script: 'git diff-tree --no-commit-id --name-only -r HEAD -- shibboleth-sp | wc -l').trim()
+                echo "Number of files changed for this commit -> ${git_files_modified_for_repo}"
             }
-            stage('build') {
-                sh 'sed -i "s/^SCM-REF=.*/SCM-REF=$(git rev-parse HEAD)/g" Makefile'
-                sh "make build"
+            if (git_files_modified_for_repo == "0") {
+                echo "No commit related to shibboleth-sp, no need to build a new image."
+                currentBuild.result = 'SUCCESS'
+                return
             }
-            stage('test') {
-                sh "make test"
+            dir("shibboleth-sp") {
+                stage('clean') {
+                    sh "make clean"
+                }
+                stage('build') {
+                    sh 'sed -i "s/^SCM-REF=.*/SCM-REF=$(git rev-parse HEAD)/g" Makefile'
+                    sh "make build"
+                }
+                stage('test') {
+                    sh "make test"
+                }
+                stage('push') {
+                    sh "make push"
+                }
+                stage('tag') {
+                    sh "make tag"
+                }
             }
-            stage('push') {
-                sh "make push"
-            }
-            stage('tag') {
-                sh "make tag"
-            }
-        }
 
-        step([$class: 'JiraIssueUpdater', issueSelector: [$class: 'DefaultIssueSelector'], scm: scm])
+            step([$class: 'JiraIssueUpdater', issueSelector: [$class: 'DefaultIssueSelector'], scm: scm])
+        } finally {
+            dir("shibboleth-sp/tests") {
+                sh 'docker-compose kill'
+                sh 'docker-compose rm'
+                sh 'docker system prune -f'
+            }
+        }        
     }
 }

@@ -9,7 +9,7 @@ cd ccextractor-master/linux
 DATE=$(date +"%Y%m%d")
 checkinstall --pkgname=ccextractor-nuxeo --pkgversion="0.0.1-$DATE-01" \
     --maintainer="'Nuxeo Packagers <packagers@nuxeo.com>'" \
-    --requires="libtesseract3,libcurl3" \
+    --requires="libtesseract4,libcurl4" \
     --backup=no --deldoc=yes --deldesc=yes --fstrans=no --default \
     cp ccextractor /usr/local/bin
 

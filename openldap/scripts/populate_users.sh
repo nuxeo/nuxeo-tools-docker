@@ -25,13 +25,18 @@ readonly __ORIGIN_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 main() {
   local users_idx=0
+  local ou_list
 
   true > "${USERS_FILE}"
 
-  while read -r unit; do
-    injectUsers "${unit}" "${users_idx}" "$(( users_idx + USERS_PER_OU - 1 ))"
-    (( users_idx+=USERS_PER_OU ))
-  done <<< "$(grep -E "dn:.*${PEOPLE_UNIT}" "${STRUCTURE_FILE}" | cut -d ' ' -f 2 | sed "/^${PEOPLE_UNIT}$/d")"
+  ou_list="$(grep -E "dn:.*${PEOPLE_UNIT}" "${STRUCTURE_FILE}" | cut -d ' ' -f 2 | sed "/^${PEOPLE_UNIT}$/d")"
+
+  if [ -n "${ou_list}" ]; then
+    while read -r unit; do
+      injectUsers "${unit}" "${users_idx}" "$(( users_idx + USERS_PER_OU - 1 ))"
+      (( users_idx+=USERS_PER_OU ))
+    done <<< "${ou_list}"
+  fi
 
   injectUsers "${PEOPLE_UNIT}" "${users_idx}"
 }

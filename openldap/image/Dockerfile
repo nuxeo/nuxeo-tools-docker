@@ -19,7 +19,7 @@
 FROM osixia/openldap:1.1.10
 
 LABEL maintainer="Nuxeo Packagers <packagers+docker-openldap@nuxeo.com>"
-LABEL version="1.0.2"
+LABEL version="1.0.3"
 LABEL scm-ref="PIPELINE-SCM-VALUE"
 LABEL scm-url="https://github.com/nuxeo/nuxeo-tools-docker"
 LABEL description="An OpenLDAP image provisioned with datas, ready for dev, testing, support"

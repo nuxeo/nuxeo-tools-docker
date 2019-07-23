@@ -15,3 +15,14 @@ Generates an LDIF file (defined by the **USERS_FILE** variable) containing all t
 ### populate_static_groups.sh
 Generates LDIF files (defined by the **GROUPS_GON_FILE** and **GROUPS_GOUN_FILE** variables) containing all the static groups.<br>
 It uses the **USERS_FILE** to add members.
+### putting all the users in ou=people only
+Remove everything in `20-structure.ldif` and only leave the following:
+```bash
+dn: ou=people,dc=nuxeo,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: people
+description: Users are in this subtree
+
+```
+Please note the empty line at the end is mandatory
